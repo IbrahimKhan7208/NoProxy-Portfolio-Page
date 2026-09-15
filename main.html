@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NoProxy Labs - AI Engineering Studio</title>
+<meta name="description" content="NoProxy Labs is an AI engineering studio building production-ready agents, RAG systems, intelligent workflows, voice AI, and AI-powered products.">
+<link rel="icon" type="image/png" href="images/Logo%20bg%20rm%20-%201.png">
+<link rel="apple-touch-icon" href="images/Logo%20bg%20rm%20-%201.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>
+try { if(localStorage.getItem('noproxy-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch(e) {}
+</script>
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg: #0B0D12;
+  --bg-alt: #10131A;
+  --surface: rgba(255,255,255,0.03);
+  --surface-hover: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.15);
+  --ink: #F2F3F7;
+  --ink-dim: #9BA1AF;
+  --ink-faint: #656B7C;
+  --accent: #4CE0C4;
+  --accent-2: #7C8CFF;
+  --gate: #F2AC54;
+  --radius-l: 22px;
+  --radius-m: 14px;
+  --radius-s: 9px;
+  --maxw: 1180px;
+  --display: "Space Grotesk", sans-serif;
+  --body: "Public Sans", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-inout: cubic-bezier(.65,0,.35,1);
+}
+
+/* ============ LIGHT THEME ============ */
+html[data-theme="light"]{
+  --bg:#EDF0F3;
+  --bg-alt:#E2E6EB;
+  --surface:#FFFFFF;
+  --surface-hover:#F6F8FA;
+  --border:rgba(21,28,38,.11);
+  --border-strong:rgba(21,28,38,.19);
+  --ink:#161D26;
+  --ink-dim:#4A5666;
+  --ink-faint:#74808E;
+  --accent:#0B7A70;
+  --accent-2:#4C5FCC;
+  --gate:#9C5A0C;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  html{ scroll-behavior:auto !important; }
+  .cursor-glow{ display:none !important; }
+  .bg-glow span{ animation:none !important; }
+  .reveal, .hero-headline, .hero-sub, .hero-actions .btn, .hero-visual{ opacity:1 !important; transform:none !important; }
+}
+html{ scroll-behavior:smooth; }
+html.lenis, html.lenis body{ height:auto; }
+.lenis.lenis-smooth{ scroll-behavior:auto !important; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body, header.nav, .nav-inner, .hero-visual-card, .problem-panel, .system-panel, .chip, .system-node, .system-proof span,
+.tile, .stat-card, .drawer, .drawer-close, .drawer-visual, .drawer-backdrop, .case-section.flow .case-section-content,
+.tag, .btn, .nav-cta, h1, h2, h3, h4, .eyebrow, .lede, .stat-cat, .stat-metric, .stat-mech, .case-cat, .case-mech,
+.case-idx, .drawer-cat, .drawer-summary, .case-section-content, .case-section, .engineer-role, .team-card p,
+.subgroup-head .count, .tile-stack, .timeline-node, .timeline-step p{
+  transition:background .4s var(--ease-inout), background-color .4s var(--ease-inout), color .35s var(--ease-inout), border-color .4s var(--ease-inout), box-shadow .4s ease;
+}
+h1,h2,h3,h4{
+  font-family:var(--display);
+  color:var(--ink);
+  margin:0;
+  font-weight:600;
+  letter-spacing:-0.015em;
+}
+p{ margin:0; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; background:none; border:0; }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+img{ max-width:100%; display:block; }
+
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 32px; position:relative; z-index:1; }
+@media (max-width:640px){ .wrap{ padding:0 20px; } }
+
+section{ padding:120px 0; border-bottom:1px solid var(--border); position:relative; transition:border-color .4s var(--ease-inout); }
+section:last-of-type{ border-bottom:none; }
+
+.eyebrow{
+  font-family:var(--body); font-size:13px; font-weight:600; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:block;
+}
+.section-head{ max-width:640px; margin-bottom:56px; }
+.section-head h2{ font-size:clamp(28px,3.6vw,42px); }
+.section-head .lede{ color:var(--ink-dim); font-size:16px; margin-top:16px; max-width:56ch; line-height:1.65; }
+
+/* ============ AMBIENT BACKGROUND GLOW ============ */
+.bg-glow{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+.bg-glow span{ position:absolute; border-radius:50%; filter:blur(100px); }
+.bg-glow.hero-glow .g1{ width:520px; height:520px; background:var(--accent); opacity:.22; top:-180px; left:-140px; animation:drift1 24s ease-in-out infinite; }
+.bg-glow.hero-glow .g2{ width:460px; height:460px; background:var(--accent-2); opacity:.16; top:20px; right:-160px; animation:drift2 28s ease-in-out infinite; }
+.bg-glow.contact-glow .g1{ width:480px; height:480px; background:var(--accent-2); opacity:.16; top:-120px; left:50%; transform:translateX(-50%); animation:drift1 26s ease-in-out infinite; }
+@keyframes drift1{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(36px,26px) scale(1.07); } }
+@keyframes drift2{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(-28px,-18px) scale(1.05); } }
+
+/* ============ SCROLL PROGRESS ============ */
+.scroll-progress{
+  position:fixed; top:0; left:0; width:100%; height:2px;
+  background:linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform:scaleX(0); transform-origin:0 50%; z-index:200; pointer-events:none;
+}
+
+/* ============ NAV ============ */
+header.nav{
+  position:sticky; top:0; z-index:40;
+  pointer-events:none; background:linear-gradient(180deg,rgba(16,19,26,.58),rgba(11,13,18,.16) 72%,transparent);
+}
+.nav-actions{ display:flex; align-items:center; gap:12px; }
+.theme-toggle{ width:42px; height:42px; padding:0; border:1px solid var(--border-strong); border-radius:50%; color:var(--ink-dim); display:grid; place-items:center; transition:color .2s ease, border-color .2s ease, background .2s ease, transform .2s var(--ease-out); }
+.theme-toggle:hover{ color:var(--accent); border-color:var(--accent); transform:rotate(16deg); }
+.theme-toggle svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; }
+.theme-toggle .icon-moon{ display:none; }
+html[data-theme="light"] .theme-toggle .icon-sun{ display:none; }
+html[data-theme="light"] .theme-toggle .icon-moon{ display:block; }
+.nav-inner{ max-width:var(--maxw); margin:0 auto; padding:10px 32px; display:flex; align-items:center; justify-content:space-between; overflow:visible; pointer-events:auto; transition:max-width .55s var(--ease-out), margin-top .55s var(--ease-out), padding .55s var(--ease-out), border-radius .55s var(--ease-out), background .55s ease, border-color .55s ease, box-shadow .55s ease; }
+header.nav.is-floating{ padding-top:16px; transition:padding .55s var(--ease-out); }
+header.nav.is-floating .nav-inner{ max-width:min(920px,calc(100% - 32px)); margin-top:0; padding:9px 20px; border:1px solid rgba(255,255,255,.1); border-radius:999px; background:rgba(21,26,34,.58); backdrop-filter:blur(18px); box-shadow:0 16px 45px rgba(0,0,0,.18); }
+@media (max-width:640px){ .nav-inner{ padding:9px 20px; } }
+.brand{ display:flex; align-items:center; gap:6px; }
+.brand img{ width:76px; height:76px; object-fit:contain; margin:-17px -16px; display:block; }
+.brand span{ font-family:var(--display); font-weight:700; font-size:16px; letter-spacing:-0.01em; }
+.nav-links{ position:relative; display:flex; gap:30px; font-size:14.5px; color:var(--ink-dim); }
+.nav-links a{ position:relative; transition:color .15s ease; }
+.nav-links a:hover{ color:var(--ink); }
+.nav-links a.is-active{ color:var(--ink); }
+.nav-underline{
+  position:absolute; bottom:-13px; left:0; width:0; height:2px; border-radius:2px;
+  background:linear-gradient(90deg, var(--accent), var(--accent-2)); opacity:0;
+  transition:transform .4s var(--ease-inout), width .4s var(--ease-inout), opacity .25s ease;
+}
+.nav-cta{
+  padding:10px 20px; border-radius:100px; font-size:14px; font-weight:600; color:var(--bg);
+  background:var(--ink); transition:background .2s ease, transform .2s ease;
+}
+.nav-cta:hover{ background:var(--accent); }
+@media (max-width:760px){ .nav-links{ display:none; } }
+@media (max-width:480px){ .nav-cta{ display:none; } .nav-actions{ gap:0; } }
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex; align-items:center; gap:8px; padding:14px 26px;
+  border-radius:100px; font-size:15px; font-weight:600; font-family:var(--body);
+  transition:background .2s ease, border-color .2s ease, color .2s ease; will-change:transform;
+}
+.btn-primary{ background:var(--ink); color:var(--bg); }
+.btn-primary:hover{ background:var(--accent); }
+.btn-ghost{ border:1.5px solid var(--border-strong); color:var(--ink); }
+.btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
+
+/* ============ HERO ============ */
+.hero{ padding-top:76px; padding-bottom:80px; overflow:hidden; }
+.hero-inner{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(510px,1.1fr); gap:clamp(28px,3vw,56px); align-items:center; }
+.hero-copy{ max-width:670px; }
+.hero-inner .eyebrow{ opacity:0; transform:translateY(8px); color:var(--ink-dim); }
+.hero-headline{ font-size:clamp(36px,5vw,60px); line-height:1.07; max-width:16.5ch; }
+.hero-sub{
+  margin-top:26px; font-size:18px; line-height:1.65; color:var(--ink-dim); max-width:56ch;
+  opacity:0; transform:translateY(14px);
+}
+.hero-actions{ margin-top:30px; display:flex; gap:14px; flex-wrap:wrap; }
+.hero-actions .btn{ opacity:0; transform:translateY(10px); }
+
+.hero-visual{ opacity:0; transform:translateY(20px); }
+
+.hero-visual-card{
+  position:relative; overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid var(--border); border-radius:var(--radius-l);
+  padding:24px clamp(20px,3vw,30px);
+  box-shadow:0 28px 70px -45px rgba(76,224,196,.45);
+}
+.hero-visual-card::before{
+  content:""; position:absolute; width:200px; height:200px; right:-80px; bottom:-100px;
+  border-radius:50%; background:var(--accent); opacity:.10; filter:blur(32px); pointer-events:none;
+}
+
+.solution-kicker{ display:flex; align-items:center; justify-content:space-between; gap:14px; position:relative; z-index:1; margin-bottom:18px; }
+.solution-kicker span:first-child{ font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:.03em; }
+.solution-kicker span:last-child{ display:flex; align-items:center; gap:7px; font-size:11px; color:var(--accent); font-family:var(--mono); white-space:nowrap; }
+.solution-kicker span:last-child::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; box-shadow:0 0 0 0 rgba(76,224,196,.6); }
+
+.solution-layout{ display:grid; grid-template-columns:.72fr 1.28fr; gap:12px; position:relative; z-index:1; }
+.problem-panel,.system-panel{ border-radius:16px; padding:14px; display:flex; flex-direction:column; }
+.problem-panel{ border:1px solid var(--border); background:rgba(255,255,255,.018); }
+.system-panel{ border:1px solid rgba(76,224,196,.27); background:linear-gradient(135deg,rgba(76,224,196,.10),rgba(124,140,255,.055)); }
+.panel-label{ display:block; font-family:var(--mono); font-size:10px; letter-spacing:.05em; text-transform:uppercase; margin-bottom:12px; }
+.problem-panel .panel-label{ color:var(--ink-faint); }
+.system-panel .panel-label{ color:var(--accent); }
+
+/* ---- scattered / disconnected tools ---- */
+.chip-scatter{ display:flex; flex-wrap:wrap; gap:8px; flex-grow:1; align-content:flex-start; }
+.chip{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 10px; border:2px dashed var(--border-strong); border-radius:9px;
+  color:var(--ink-dim); font-size:11px; background:rgba(11,13,18,.36);
+  transform:rotate(var(--tilt,0deg));
+  will-change:transform, opacity;
+}
+.chip svg{ width:13px; height:13px; flex-shrink:0; opacity:.75; }
+.problem-caption{ margin-top:12px; font-size:10.5px; color:var(--ink-faint); line-height:1.5; }
+
+/* ---- connected system flow ---- */
+.system-flow{ display:grid; grid-template-columns:1fr 26px 1.22fr 26px 1fr; align-items:center; }
+.system-node{
+  min-height:64px; border:1px solid rgba(76,224,196,.34); border-radius:11px; padding:9px;
+  background:rgba(11,13,18,.35); display:flex; flex-direction:column; justify-content:center;
+  font-size:11px; color:var(--ink-dim); line-height:1.25;
+}
+.system-node strong{ display:block; color:var(--ink); font-family:var(--display); font-size:12px; margin-bottom:4px; }
+.system-node.engine{ border-color:rgba(76,224,196,.65); background:rgba(76,224,196,.14); color:var(--accent); text-align:center; }
+.system-node.engine strong{ color:var(--accent); }
+
+.system-link{ position:relative; height:2px; margin:0 4px; border-radius:2px; background:rgba(255,255,255,.08); overflow:visible; }
+.system-link::before{ content:""; position:absolute; inset:0; border-radius:2px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); opacity:.4; }
+.signal-dot{
+  position:absolute; top:50%; left:0; width:6px; height:6px; border-radius:50%;
+  background:var(--accent); box-shadow:0 0 8px 2px rgba(76,224,196,.7);
+  transform:translate(-50%,-50%);
+}
+
+.system-proof{ display:flex; flex-wrap:nowrap; gap:6px; margin-top:12px; }
+.system-proof span{
+  flex:1; text-align:center; font-size:10px; color:var(--ink-dim); padding:5px 6px;
+  border-radius:999px; background:rgba(11,13,18,.28); border:1px solid rgba(255,255,255,.08);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .solution-kicker span:last-child::before{ animation:statusPulse 2.2s ease-out infinite; }
+  .chip{ animation:chipDrift 3s ease-in-out infinite; }
+  .chip:nth-child(1){ animation-delay:0s; }
+  .chip:nth-child(2){ animation-delay:.5s; }
+  .chip:nth-child(3){ animation-delay:1.1s; }
+  .chip:nth-child(4){ animation-delay:1.7s; }
+  .system-node.engine{ animation:enginePulse 2.6s ease-in-out infinite; }
+  .signal-dot{ animation:signalTravel 2.4s ease-in-out infinite; }
+  .system-flow .system-link:last-of-type .signal-dot{ animation-delay:1.2s; }
+  .system-proof span{ animation:proofPulse 4.5s ease-in-out infinite; }
+  .system-proof span:nth-child(1){ animation-delay:0s; }
+  .system-proof span:nth-child(2){ animation-delay:1.1s; }
+  .system-proof span:nth-child(3){ animation-delay:2.2s; }
+}
+
+@keyframes statusPulse{ 70%{ box-shadow:0 0 0 7px rgba(76,224,196,0); } 100%{ box-shadow:0 0 0 0 rgba(76,224,196,0); } }
+@keyframes chipDrift{
+  0%,100%{ transform:translateY(0) rotate(var(--tilt,0deg)); opacity:.6; }
+  50%{ transform:translateY(-3px) rotate(var(--tilt,0deg)); opacity:.85; }
+}
+@keyframes enginePulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(76,224,196,.28); }
+  50%{ box-shadow:0 0 0 8px rgba(76,224,196,0); }
+}
+@keyframes signalTravel{
+  0%{ left:0; opacity:0; }
+  10%{ opacity:1; }
+  90%{ opacity:1; }
+  100%{ left:100%; opacity:0; }
+}
+@keyframes proofPulse{
+  0%,100%{ border-color:rgba(255,255,255,.08); color:var(--ink-dim); }
+  15%{ border-color:rgba(76,224,196,.55); color:var(--accent); }
+  30%{ border-color:rgba(255,255,255,.08); color:var(--ink-dim); }
+}
+
+@media (max-width:900px){
+  .hero-inner{ grid-template-columns:1fr; gap:52px; } .hero-copy{ max-width:720px; } .hero-visual{ max-width:760px; }
+}
+@media (max-width:560px){
+  .solution-layout{ grid-template-columns:1fr; }
+  .system-flow{ grid-template-columns:1fr 20px 1.1fr 20px 1fr; }
+  .problem-panel,.system-panel{ padding:12px; }
+  .system-node{ padding:7px; font-size:10px; }
+  .system-node strong{ font-size:11px; }
+  .system-proof span{ font-size:9px; }
+}
+/* ============ BENTO SERVICES ============ */
+.bento{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.tile{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-m);
+  padding:28px 26px; display:flex; flex-direction:column; min-height:190px;
+  transition:transform .3s var(--ease-out), border-color .3s ease, box-shadow .3s ease, background .3s ease;
+  position:relative; text-align:left; width:100%; font-family:var(--body); cursor:pointer;
+}
+.tile.large{ grid-column:span 2; }
+@media (min-width:901px){ .tile.large:last-child{ grid-column:2 / span 2; } }
+.tile:hover{ transform:translateY(-4px); border-color:var(--border-strong); background:var(--surface-hover); box-shadow:0 24px 48px -28px rgba(76,224,196,0.35); }
+.tile.gate:hover{ box-shadow:0 24px 48px -28px rgba(242,172,84,0.3); }
+.tile-icon{ width:26px; height:26px; color:var(--accent); margin-bottom:18px; transition:transform .3s var(--ease-out), color .35s var(--ease-inout); }
+.tile.data:hover{ box-shadow:0 24px 48px -28px rgba(124,140,255,.3); }
+.tile.data .tile-icon{ color:var(--accent-2); }
+.tile.gate .tile-icon{ color:var(--gate); }
+.tile-icon svg{ width:100%; height:100%; display:block; }
+.tile:hover .tile-icon{ transform:scale(1.1) rotate(-4deg); }
+.tile h3{ font-size:17px; margin-bottom:8px; padding-right:18px; }
+.tile p{ color:var(--ink-dim); font-size:14px; line-height:1.6; flex-grow:1; }
+.tile-badge{
+  align-self:flex-start; font-size:11.5px; font-weight:600; color:var(--gate);
+  background:rgba(242,172,84,0.12); padding:4px 10px; border-radius:100px; margin-top:14px;
+}
+.tile-stack{ font-family:var(--mono); font-size:11px; color:var(--ink-faint); margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
+.tile-expand{
+  position:absolute; top:26px; right:26px; font-size:12px; font-family:var(--body); font-weight:600;
+  color:var(--ink-faint); opacity:0; transform:translateX(-4px);
+  transition:opacity .25s ease, transform .25s ease, color .2s ease;
+}
+.tile:hover .tile-expand, .tile:focus-visible .tile-expand{ opacity:1; transform:translateX(0); color:var(--accent); }
+.tile.data:hover .tile-expand{ color:var(--accent-2); }
+.tile.gate:hover .tile-expand{ color:var(--gate); }
+@media (max-width:900px){ .tile-expand{ position:static; display:inline-block; margin-bottom:10px; opacity:.55; transform:none; } .tile:hover .tile-expand{ transform:none; } }
+@media (max-width:900px){ .bento{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .bento{ grid-template-columns:1fr; } .tile.large{ grid-column:span 1; } }
+
+/* ============ WORK: EDITORIAL LIST (agentic) ============ */
+.subgroup-head{ display:flex; align-items:baseline; justify-content:space-between; margin:0 0 20px; }
+.subgroup-head h3{ font-size:14px; font-weight:600; color:var(--ink); font-family:var(--body); }
+.subgroup-head .count{ font-size:13px; color:var(--ink-faint); }
+.case-list{ border-top:1px solid var(--border); margin-bottom:64px; }
+.case-row{
+  width:100%; display:grid; grid-template-columns:52px 1fr 24px; gap:24px; align-items:flex-start;
+  text-align:left; padding:28px 6px; border-bottom:1px solid var(--border); color:inherit;
+  transition:background .2s ease, border-color .4s var(--ease-inout);
+}
+.case-row:hover{ background:var(--surface); }
+.case-idx{ font-family:var(--mono); font-size:13px; color:var(--ink-faint); padding-top:4px; }
+.case-cat{ display:inline-flex; align-items:center; width:max-content; font-family:var(--mono); font-size:11px; letter-spacing:.02em; color:var(--accent); margin-bottom:10px; padding:4px 8px; border:1px solid rgba(76,224,196,.25); border-radius:999px; background:rgba(76,224,196,.06); }
+.case-main h3{ font-size:19px; margin-bottom:8px; }
+.case-mech{ color:var(--ink-dim); font-size:14.5px; line-height:1.6; max-width:70ch; }
+.case-arrow{ font-size:18px; color:var(--ink-faint); transition:transform .25s var(--ease-out), color .25s ease; padding-top:4px; }
+.case-row:hover .case-arrow{ transform:translateX(5px); color:var(--accent); }
+
+/* ============ WORK: STAT CARDS (model engineering) ============ */
+.stat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+@media (max-width:900px){ .stat-grid{ grid-template-columns:1fr; } }
+.stat-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-m);
+  padding:28px 26px; text-align:left; display:flex; flex-direction:column;
+  transition:transform .3s var(--ease-out), border-color .3s ease, background .3s ease;
+}
+.stat-card:hover{ transform:translateY(-4px); border-color:var(--border-strong); background:var(--surface-hover); }
+.stat-cat{ font-size:12px; color:var(--ink-faint); margin-bottom:14px; }
+.stat-metric{ font-family:var(--display); font-size:15.5px; font-weight:600; color:var(--accent); line-height:1.4; }
+.stat-metric.gate{ color:var(--gate); }
+.stat-underline{ width:100%; height:4px; margin-top:8px; display:block; }
+.stat-underline line{ stroke:var(--accent); stroke-width:2; }
+.stat-metric.gate + .stat-underline line, .stat-metric.gate ~ .stat-underline line{ stroke:var(--gate); }
+.stat-card h3{ font-size:18px; margin-top:18px; margin-bottom:10px; }
+.stat-mech{ color:var(--ink-dim); font-size:13.8px; line-height:1.6; margin-bottom:16px; }
+.stat-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:auto; }
+.tag{
+  font-family:var(--mono); font-size:11px; color:var(--ink-dim);
+  border:1px solid var(--border-strong); padding:4px 9px; border-radius:20px; white-space:nowrap;
+}
+
+/* ============ HOW WE WORK: TIMELINE ============ */
+.timeline{ display:grid; grid-template-columns:repeat(3,1fr); gap:40px; position:relative; }
+.timeline-line{
+  position:absolute; top:19px; left:calc(16.66% ); right:calc(16.66%); height:2px;
+  background:var(--border); z-index:0; transform-origin:0 50%;
+}
+.timeline-line-fill{
+  position:absolute; inset:0; background:linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform:scaleX(0); transform-origin:0 50%;
+}
+.timeline-step{ position:relative; z-index:1; }
+.timeline-node{
+  width:40px; height:40px; border-radius:50%; background:var(--bg-alt); border:1.5px solid var(--border-strong);
+  display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:600; font-size:14px;
+  margin-bottom:22px; transform:scale(.6); opacity:0;
+}
+.timeline-step h3{ font-size:18px; margin-bottom:10px; }
+.timeline-step p{ color:var(--ink-dim); font-size:14.5px; line-height:1.62; max-width:32ch; }
+@media (max-width:800px){
+  .timeline{ grid-template-columns:1fr; gap:36px; }
+  .timeline-line, .timeline-line-fill{ display:none; }
+}
+
+/* ============ TEAM ============ */
+.team-row{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+@media (max-width:760px){ .team-row{ grid-template-columns:1fr; gap:44px; } }
+.team-card{ display:flex; flex-direction:column; align-items:flex-start; }
+.avatar{
+  width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-weight:700; font-size:17px; color:var(--bg); margin-bottom:22px;
+  background:linear-gradient(135deg, var(--g1,var(--accent)), var(--g2,var(--accent-2)));
+}
+.engineer-role{ font-size:12.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+.team-card.gate-role .engineer-role{ color:var(--gate); }
+.team-card h3{ font-size:24px; margin-bottom:14px; }
+.team-card p{ color:var(--ink-dim); font-size:15px; line-height:1.65; }
+.engineer-links{ margin-top:20px; display:flex; gap:16px; font-size:13.5px; }
+.engineer-links a{ color:var(--ink-dim); border-bottom:1px solid var(--border-strong); padding-bottom:2px; transition:color .15s ease, border-color .15s ease; }
+.engineer-links a:hover{ color:var(--accent); border-color:var(--accent); }
+
+/* ============ CONTACT ============ */
+.contact-band{ text-align:center; padding:130px 0; }
+.contact-band .wrap{ max-width:680px; }
+.contact-band h2{ font-size:clamp(28px,4vw,44px); }
+.contact-band .lede{ color:var(--ink-dim); font-size:16.5px; margin-top:18px; margin-bottom:36px; }
+.contact-band .btn{ font-size:16px; padding:16px 30px; }
+
+/* ============ FOOTER ============ */
+footer{ padding:44px 0 32px; }
+.footer-inner{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--ink-faint); }
+.footer-brand{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.footer-brand img{ width:62px; height:62px; object-fit:contain; margin:-14px -13px; }
+.footer-brand span{ font-family:var(--display); font-weight:700; font-size:15px; color:var(--ink); }
+.footer-links{ display:flex; gap:20px; }
+.footer-links a{ color:var(--ink-dim); transition:color .15s ease; }
+.footer-links a:hover{ color:var(--ink); }
+.footer-egg{ font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); cursor:help; transition:color .2s ease; display:inline-block; margin-top:24px; }
+.footer-egg:hover{ color:var(--accent); }
+
+/* ============ CUSTOM CURSOR (soft glow) ============ */
+.cursor-glow{
+  position:fixed; top:0; left:0; width:24px; height:24px; border-radius:50%;
+  background:radial-gradient(circle, rgba(76,224,196,0.5), rgba(76,224,196,0) 72%);
+  pointer-events:none; z-index:9999; transform:translate(-50%,-50%);
+  transition:width .25s var(--ease-out), height .25s var(--ease-out), opacity .25s ease;
+}
+.cursor-glow.is-active{ width:64px; height:64px; }
+@media (hover:none), (pointer:coarse){ .cursor-glow{ display:none !important; } }
+
+/* ============ REVEAL (scroll animation hook) ============ */
+.reveal{ opacity:0; transform:translateY(22px); }
+
+/* ============ DRAWER (project detail) ============ */
+.drawer-backdrop{
+  position:fixed; inset:0; z-index:100; background:rgba(4,6,9,0.8);
+  backdrop-filter:blur(10px); opacity:0; visibility:hidden; pointer-events:none;
+}
+.drawer{
+  position:fixed; inset:clamp(16px,4vh,44px) clamp(16px,4vw,56px); width:auto; height:auto; max-width:1240px; margin:auto;
+  background:linear-gradient(145deg,#12161f,#0d1016); border:1px solid var(--border-strong); border-radius:22px;
+  z-index:101; transform:translateY(28px) scale(.98); overflow-y:auto; overscroll-behavior:contain; padding:clamp(24px,4vw,52px);
+  visibility:hidden; box-shadow:0 36px 100px rgba(0,0,0,.48);
+}
+.drawer-close{
+  position:sticky; float:right; top:0; margin:-10px -10px 0 18px; width:40px; height:40px; border-radius:50%;
+  border:1px solid var(--border-strong); color:var(--ink-dim); background:rgba(11,13,18,.88); backdrop-filter:blur(10px); z-index:3; display:flex; align-items:center; justify-content:center;
+  font-size:20px; transition:border-color .15s ease, color .15s ease, transform .15s ease;
+}
+.drawer-close:hover{ color:var(--ink); border-color:var(--accent); transform:rotate(90deg); }
+.drawer-top{ display:grid; grid-template-columns:minmax(0,1.32fr) minmax(330px,.68fr); gap:clamp(28px,5vw,64px); align-items:center; clear:both; }
+.drawer.no-media .drawer-top{ grid-template-columns:minmax(0,760px); }
+.drawer-visual{ width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; border:1px solid var(--border-strong); background:#080a0e; box-shadow:0 24px 52px -30px rgba(0,0,0,.8); }
+.drawer-visual img{ width:100%; height:100%; object-fit:contain; }
+.drawer-visual:empty{ display:none; }
+.drawer-cat{ font-family:var(--mono); font-size:11px; color:var(--accent); margin-bottom:12px; letter-spacing:.05em; text-transform:uppercase; }
+.drawer h3{ font-size:clamp(28px,3vw,42px); margin-bottom:18px; line-height:1.12; }
+.drawer-metric{ font-family:var(--display); font-weight:600; font-size:15px; margin-bottom:22px; line-height:1.55; color:var(--project-accent,var(--accent)); }
+.drawer-summary{ color:var(--ink-dim); font-size:15px; line-height:1.7; margin-bottom:24px; }
+.drawer-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:0; }
+.drawer-tags .tag{ color:var(--project-accent,var(--accent)); border-color:color-mix(in srgb,var(--project-accent,var(--accent)) 34%,transparent); background:color-mix(in srgb,var(--project-accent,var(--accent)) 8%,transparent); }
+.drawer-links{ display:flex; gap:12px; flex-wrap:wrap; }
+.drawer-links--header{ margin:0 0 24px; align-items:center; }
+.drawer-links--header::before{ content:'Project links'; width:100%; font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); }
+.drawer-links a{
+  border:1px solid var(--border-strong); padding:10px 18px; border-radius:100px;
+  font-size:13.5px; display:flex; align-items:center; gap:7px;
+  transition:border-color .15s ease, background .15s ease;
+}
+.drawer-links a:hover{ border-color:var(--project-accent,var(--accent)); background:var(--surface); }
+.drawer-links a.disabled{ opacity:.35; pointer-events:none; }
+.case-study{ margin-top:clamp(38px,6vw,70px); border-top:1px solid var(--border); padding-top:clamp(28px,4vw,46px); }
+.case-study-title{ font-family:var(--mono); color:var(--ink-faint); font-size:11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:26px; }
+.case-section{ display:grid; grid-template-columns:180px minmax(0,1fr); gap:28px; padding:24px 0; border-top:1px solid var(--border); }
+.case-section:first-of-type{ border-top:0; padding-top:0; }
+.case-section h4{ font-size:16px; color:var(--ink); }
+.case-section-content{ color:var(--ink-dim); font-size:15px; line-height:1.72; white-space:pre-line; max-width:76ch; }
+.case-section.flow .case-section-content{ font-family:var(--mono); font-size:12px; line-height:1.9; color:var(--accent); padding:18px 20px; border:1px solid rgba(76,224,196,.22); border-radius:12px; background:rgba(76,224,196,.04); }
+.case-section.list .case-section-content{ columns:2; column-gap:34px; }
+.case-section.list .case-section-content span{ display:block; break-inside:avoid; margin-bottom:6px; }
+.proof-links{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+.proof-link{
+  border:1px solid var(--border-strong); padding:9px 16px; border-radius:100px;
+  font-size:13px; font-family:var(--body); color:var(--ink-dim); background:transparent;
+  transition:border-color .15s ease, background .15s ease, color .15s ease;
+}
+.proof-link:hover{ border-color:var(--project-accent,var(--accent)); color:var(--project-accent,var(--accent)); background:var(--surface); }
+.drawer-item{ opacity:0; }
+@media (max-width:780px){ .drawer{ inset:10px; padding:26px 20px; border-radius:16px; }.drawer-top{ grid-template-columns:1fr; gap:28px; }.drawer-visual{ aspect-ratio:16/9; }.case-section{ grid-template-columns:1fr; gap:8px; padding:20px 0; }.case-section.list .case-section-content{ columns:1; } }
+
+/* Light-only surfaces that use intentional dark layers in the default theme. */
+html[data-theme="light"] header.nav{ background:linear-gradient(180deg,rgba(237,240,243,.88),rgba(237,240,243,.22) 72%,transparent); }
+html[data-theme="light"] header.nav.is-floating .nav-inner{ background:rgba(255,255,255,.82); border-color:rgba(21,28,38,.14); box-shadow:0 16px 45px rgba(23,30,40,.14); }
+html[data-theme="light"] .hero-visual-card{ background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(226,230,235,.7)); box-shadow:0 28px 70px -45px rgba(11,122,112,.38); }
+html[data-theme="light"] .problem-panel{ background:rgba(255,255,255,.74); }
+html[data-theme="light"] .system-panel{ border-color:rgba(11,122,112,.22); background:linear-gradient(135deg,rgba(11,122,112,.08),rgba(76,95,204,.06)); }
+html[data-theme="light"] .chip, html[data-theme="light"] .system-node{ background:rgba(255,255,255,.86); }
+html[data-theme="light"] .system-link{ background:rgba(21,28,38,.12); }
+html[data-theme="light"] .system-proof span{ background:rgba(255,255,255,.72); border-color:rgba(21,28,38,.09); }
+html[data-theme="light"] .drawer-backdrop{ background:rgba(26,32,42,.4); }
+html[data-theme="light"] .drawer{ background:linear-gradient(145deg,#FFFFFF,var(--bg-alt)); box-shadow:0 36px 100px rgba(23,30,40,.22); }
+html[data-theme="light"] .drawer-close{ background:rgba(255,255,255,.92); }
+html[data-theme="light"] .drawer-visual{ background:var(--bg-alt); box-shadow:0 24px 52px -30px rgba(23,30,40,.32); }
+html[data-theme="light"] .case-section.flow .case-section-content{ border-color:rgba(11,122,112,.2); background:rgba(11,122,112,.05); }
+html[data-theme="light"] .brand img, html[data-theme="light"] .footer-brand img{ filter:brightness(0) saturate(100%); }
+
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <img src="images/Logo bg rm - 1.png" alt="NoProxy Labs logo" />
+      <span>NoProxy Labs</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#roster">Services</a>
+      <a href="#work">Work</a>
+      <a href="#engineers">Team</a>
+      <a href="#contact">Contact</a>
+      <span class="nav-underline" id="navUnderline"></span>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme" aria-pressed="false" title="Switch theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4M18.7 18.7l-1.4-1.4M6.7 6.7 5.3 5.3"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg>
+      </button>
+      <a href="#contact" class="nav-cta">Work with us</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="bg-glow hero-glow"><span class="g1"></span><span class="g2"></span></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">AI engineers. No layers in between.</span>
+        <h1 class="hero-headline">AI systems built to do real work.</h1>
+        <p class="hero-sub">We build agents, knowledge systems, and AI-powered products that connect to your data, tools, and workflows — with the engineering and checks needed to make them reliable in production.</p>
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-primary" data-magnetic>See our work</a>
+          <a href="#contact" class="btn btn-ghost">Talk to an engineer</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-visual-card">
+          <div class="solution-kicker">
+            <span>From disconnected work to one intelligent system</span>
+            <span>built for production</span>
+          </div>
+          <div class="solution-layout">
+            <div class="problem-panel">
+              <span class="panel-label">The usual setup</span>
+              <div class="chip-scatter">
+                <span class="chip" style="--tilt:-2deg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>
+                  CRM
+                </span>
+                <span class="chip" style="--tilt:1.5deg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16v12H4z"/><path d="M4 6l8 7 8-7"/></svg>
+                  Inbox
+                </span>
+                <span class="chip" style="--tilt:-1deg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3.5h8l4 4V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/></svg>
+                  Documents
+                </span>
+                <span class="chip" style="--tilt:2deg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>
+                  Manual
+                </span>
+              </div>
+              <p class="problem-caption">disconnected — work stalls between tools</p>
+            </div>
+            <div class="system-panel">
+              <span class="panel-label">The NoProxy approach</span>
+              <div class="system-flow">
+                <div class="system-node"><strong>Your context</strong>data, knowledge, rules</div>
+                <span class="system-link" aria-hidden="true"><span class="signal-dot"></span></span>
+                <div class="system-node engine"><strong>Your AI agent</strong>reasons, routes, acts</div>
+                <span class="system-link" aria-hidden="true"><span class="signal-dot"></span></span>
+                <div class="system-node"><strong>Real progress</strong>follow-up, answer, update</div>
+              </div>
+              <div class="system-proof">
+                <span>Grounded</span><span>Controlled</span><span>Evaluated</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="roster">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Services</span>
+        <h2>The agents on the roster</h2>
+        <p class="lede">We build the AI layer and the software around it — from agents and RAG systems to voice, business workflows, and complete AI products.</p>
+      </div>
+      <div class="bento" id="bentoGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ WORK ============ -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Selected work</span>
+        <h2>Proof of work</h2>
+        <p class="lede">Real systems across agents, retrieval, product workflows, and model engineering. Open a project to see how it works, what we measured, and the engineering behind it.</p>
+      </div>
+
+      <div class="subgroup-head">
+        <h3>Agentic &amp; Generative Systems</h3>
+      </div>
+      <div class="case-list" id="agenticList"></div>
+
+      <div class="subgroup-head">
+        <h3>LLMs & Model Training</h3>
+      </div>
+      <div class="stat-grid" id="modelGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ HOW WE WORK ============ -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Process</span>
+        <h2>How an engagement runs</h2>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="timeline-line"><div class="timeline-line-fill" id="timelineFill"></div></div>
+        <div class="timeline-step">
+          <div class="timeline-node" id="node1">01</div>
+          <h3>Map one workflow</h3>
+          <p>We take the one process actually costing you money or tribal knowledge, and design the agentic version end to end before either of us commits to a build.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-node" id="node2">02</div>
+          <h3>Build inside your stack</h3>
+          <p>Agent, retrieval pipeline, or fine-tune — shipped against your real data and tools, with a human checkpoint wherever a wrong call has real consequences.</p>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-node" id="node3">03</div>
+          <h3>Hand off with the reasoning</h3>
+          <p>You get the code and the eval harness, not a black box — and a documented reason for every architectural call we made along the way.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ENGINEERS ============ -->
+  <section id="engineers">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Team</span>
+        <h2>The engineers</h2>
+        <p class="lede">Technical people, direct communication. The engineers working on your project are close to the problem from the first conversation to the final handoff.</p>
+      </div>
+      <div class="team-row">
+        <div class="team-card reveal" style="--g1:#4CE0C4;--g2:#7C8CFF;">
+          <div class="avatar">IK</div>
+          <div class="engineer-role">Agentic AI · Full-Stack · ML</div>
+          <h3>Ibrahim Khan</h3>
+          <p>Builds agentic systems, RAG pipelines, and AI-powered products across systems and the modern web. Focuses on turning complex AI workflows into reliable applications, with hands-on work across model training, evaluation, and fine-tuning.</p>
+          <div class="engineer-links"><a href="https://github.com/IbrahimKhan7208" target="_blank" rel="noopener">GitHub</a><a href="https://www.upwork.com/freelancers/~01385850ddb06f1c52" target="_blank" rel="noopener">Upwork</a></div>
+        </div>
+        <div class="team-card reveal gate-role" style="--g1:#F2AC54;--g2:#7C8CFF;">
+          <div class="avatar">SK</div>
+          <div class="engineer-role">Autonomous AI · DevOps · ML</div>
+          <h3>Simak Khan</h3>
+          <p>Builds autonomous systems, retrieval-heavy AI applications, and ML infrastructure. Focuses on intelligent coding and operations systems, observability, deep retrieval, and model engineering.</p>
+          <div class="engineer-links"><a href="https://github.com/KhanSimak" target="_blank" rel="noopener">GitHub</a><a href="https://www.upwork.com/freelancers/~01571d272763c62c0c" target="_blank" rel="noopener">Upwork</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="contact-band">
+    <div class="bg-glow contact-glow"><span class="g1"></span></div>
+    <div class="wrap reveal">
+      <span class="eyebrow">Start a conversation</span>
+      <h2>Have a workflow worth automating properly?</h2>
+      <p class="lede">Tell us what you're trying to build, what your current system looks like, or where it's breaking. We'll tell you what we'd build — and if AI isn't the right answer, we'll say that too.</p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+        <a href="mailto:noproxylabs@gmail.com" class="btn btn-primary" data-magnetic>noproxylabs@gmail.com</a>
+        <a href="https://www.upwork.com/agencies/2094907320783036273/" target="_blank" rel="noopener" class="btn btn-ghost">Hire us on Upwork</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand"><img src="images/Logo bg rm - 1.png" alt="NoProxy Labs"><span>NoProxy Labs</span></div>
+        <div>AI  engineers. No wrapper in between.</div>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/NoProxyLabs" target="_blank" rel="noopener">GitHub org</a>
+        <a href="#roster">Services</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-egg" title="the origin of the name, if you're wondering">© <span id="year"></span> NoProxy Labs. Built by engineers, not proxies.</div>
+  </div>
+</footer>
+
+<!-- ============ DRAWER ============ -->
+<div class="drawer-backdrop" id="drawerBackdrop" data-close></div>
+<div class="drawer" id="projectDrawer" role="dialog" aria-modal="true" aria-hidden="true" data-lenis-prevent>
+  <button class="drawer-close" id="drawerClose" aria-label="Close">&times;</button>
+  <div class="drawer-top">
+    <div class="drawer-visual drawer-item" id="drawerVisual"></div>
+    <div class="drawer-intro">
+      <div class="drawer-cat drawer-item" id="drawerCat"></div>
+      <div class="drawer-links drawer-links--header drawer-item" id="drawerLinks"></div>
+      <h3 class="drawer-item" id="drawerTitle"></h3>
+      <div class="drawer-metric drawer-item" id="drawerMetric"></div>
+      <p class="drawer-summary drawer-item" id="drawerSummary"></p>
+      <div class="drawer-tags drawer-item" id="drawerTags"></div>
+    </div>
+  </div>
+  <div class="case-study drawer-item" id="caseStudy"></div>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.brand img, .footer-brand img').forEach(function(img){
+  img.src = 'images/Logo bg rm.png';
+  img.alt = 'NoProxy Labs logo';
+});
+
+/* ================= THEME TOGGLE ================= */
+(function(){
+  var toggle = document.getElementById('themeToggle');
+  if(!toggle) return;
+  function syncThemeControl(){
+    var isLight = document.documentElement.dataset.theme === 'light';
+    toggle.setAttribute('aria-pressed', String(isLight));
+    toggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+    toggle.title = isLight ? 'Switch to dark theme' : 'Switch to light theme';
+  }
+  syncThemeControl();
+  toggle.addEventListener('click', function(){
+    var isLight = document.documentElement.dataset.theme === 'light';
+    if(isLight) delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = 'light';
+    try { localStorage.setItem('noproxy-theme', isLight ? 'dark' : 'light'); } catch(e) {}
+    syncThemeControl();
+  });
+})();
+
+var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(window.gsap && window.ScrollTrigger){ gsap.registerPlugin(ScrollTrigger); }
+
+/* ================= ICONS ================= */
+var icons = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M7 12h4l4-4.5M11 12l4 4.5"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 3.3 6.4L4 20l1.3-3.6A7.96 7.96 0 0 1 4 12Z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 12h2l2-5 3 10 3-7 2 4h4"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M9.5 13l2 2 3.5-4"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-5 4 4 7-8"/><path d="M15 8h5v5"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9.5 3.5v3M14.5 3.5v3M9.5 17.5v3M14.5 17.5v3M3.5 9.5h3M3.5 14.5h3M17.5 9.5h3M17.5 14.5h3"/></svg>'
+];
+
+/* ================= SERVICES DATA ================= */
+var roster = [
+  { name:'AI Agents &amp; Workflow Automation', cls:'signal', p:'AI agents that use your tools, reason over real data, make decisions, complete multi-step workflows, and hand off to humans when judgment or approval is needed.', tag:'LangGraph · Tool-calling · Orchestration · Guardrails',
+    build:['Tool-using agents','Multi-step business workflows','Research & investigation agents','Approval-driven automation','Internal AI copilots','Human-in-the-loop systems'],
+    workflows:'Research · operations · sales · support · internal tools · DevOps',
+    proofText:'Investment Research Agent, Careflow Console, and AI Incident Investigation Agent.',
+    proofProjects:[0,1,2] },
+  { name:'RAG &amp; Knowledge Systems', cls:'data', p:'Connect your documents, databases, and internal knowledge to AI with reliable retrieval, reranking, citations, and evaluation.', tag:'RAG · Vector search · Citations · Reranking',
+    build:['Internal knowledge assistants','Document Q&A systems','Multi-source retrieval','Citation-backed answers','Hybrid retrieval pipelines','Evaluation and retrieval quality systems'],
+    workflows:'Company knowledge · policy search · research · support · technical documentation',
+    proofText:'Investment Research Agent and the knowledge systems inside our healthcare and sales platforms.',
+    proofProjects:[0,1,3] },
+  { name:'AI Sales &amp; CRM', cls:'signal', p:'AI systems that qualify leads, enrich records, recommend next actions, automate follow-ups, and keep your CRM moving.', tag:'Lead scoring · Enrichment · CRM workflows',
+    build:['AI lead qualification','ICP scoring','Lead enrichment','CRM automation','Follow-up agents','Sales copilots'],
+    workflows:'Lead → qualify → enrich → follow up → update CRM → book',
+    proofText:'Our Real Estate Sales & Voice Platform connects qualification, enrichment, CRM, email, matching, and booking into one workflow.',
+    proofProjects:[3] },
+  { name:'Omnichannel Support', cls:'data', p:'One AI support layer across WhatsApp, web, email, and other channels — with shared context and human handoff when needed.', tag:'WhatsApp · Email · Web Chatbot · Handoff',
+    build:['WhatsApp agents','Web support assistants','Email agents','Shared conversation state','Knowledge-grounded responses','Human escalation'],
+    workflows:'Customer support · FAQs · appointment requests · issue triage · follow-up',
+    proofText:'Careflow Console connects staff workflows with a patient-facing WhatsApp agent through one shared backend.',
+    proofProjects:[1] },
+  { name:'Document AI &amp; OCR Intelligence', cls:'data', p:'Turn PDFs, scans, forms, and business documents into structured, validated data your applications and teams can actually use.', tag:'OCR · Extraction · Validation · Review',
+    build:['Document extraction','OCR pipelines','Structured data extraction','Confidence scoring','Validation layers','Human review workflows'],
+    workflows:'Forms · invoices · applications · reports · onboarding documents · business records',
+    proofText:'Careflow includes document intake, OCR, structured extraction, confidence reporting, and mandatory staff review.',
+    proofProjects:[1] },
+  { name:'Voice AI', cls:'signal', p:'Voice agents that handle inbound and outbound calls, qualify conversations, answer questions, book appointments, and escalate when needed.', tag:'Twilio · Pipecat · Deepgram · Cartesia',
+    build:['Inbound voice agents','Outbound calling agents','Qualification flows','Appointment booking','Knowledge-grounded voice assistants','Human handoff'],
+    workflows:'Sales calls · support · qualification · scheduling · reminders · intake',
+    proofText:'Our Real Estate Sales & Voice Platform uses Twilio, Pipecat, Deepgram, and Cartesia in a state-controlled voice workflow.',
+    proofProjects:[3] },
+  { name:'AI Search &amp; Recommendations', cls:'data', p:'Search and recommendation systems that understand intent, retrieve the right information, and rank results using your real business data.', tag:'Embeddings · Semantic ranking',
+    build:['Semantic search','Natural-language search','Recommendation engines','Hybrid retrieval','Semantic ranking','Personalized matching'],
+    workflows:'Product discovery · property matching · knowledge search · content discovery',
+    proofText:'Our real estate system combines embeddings, semantic retrieval, and hard business rules to match leads against real inventory.',
+    proofProjects:[3] },
+  { name:'LLM & Model Engineering', cls:'gate', p:'Custom routing, fine-tuning, evaluation, and post-training for products that need more control, efficiency, or specialization than a standard API call.', tag:'Fine-tuning · GRPO / DPO · Evals',
+    build:['Fine-tuned models','Task-specific routing models','Model evaluation','Post-training','Inference optimization','Custom model pipelines'],
+    workflows:'Specialized classification · routing · extraction · generation · smaller-model replacement',
+    proofText:'Our Question-Decomposition Router and TinyZero experiments cover CPT, SFT, GRPO, evaluation, and custom model deployment.',
+    proofProjects:[5,6] }
+];
+var bento = document.getElementById('bentoGrid');
+roster.forEach(function(r,i){
+  var tile = document.createElement('button');
+  tile.type = 'button';
+  tile.className = 'tile reveal' + (r.cls?(' '+r.cls):'') + ((i===0||i===7)?' large':'');
+  tile.setAttribute('aria-haspopup','dialog');
+  tile.innerHTML =
+    '<div class="tile-icon">'+icons[i]+'</div>'+
+    '<span class="tile-expand" aria-hidden="true">Learn more →</span>'+
+    '<h3>'+r.name+'</h3>'+
+    '<p>'+r.p+'</p>'+
+    '<div class="tile-stack">'+r.tag+'</div>';
+  tile.addEventListener('click', function(){ openServiceDrawer(r); });
+  bento.appendChild(tile);
+});
+
+/* ================= PROJECT DATA =================
+   Set `image` to a URL (or leave null) per project — only projects with
+   a real image show a visual in the drawer. Links default to '#' until
+   you send the real GitHub / Live / HuggingFace URLs. */
+var projects = [
+  {
+    cat:'agentic', catLabel:'FinTech', title:'Investment Research Agent',
+    mech:'A multi-agent research system that breaks complex financial questions into smaller tasks, routes each task to the right source, runs parallel research when needed, and produces cited answers.',
+    metric:'Decompose → route (RAG or live market data) → parallel fan-out when needed → cited synthesis',
+    desc:'Built on LangGraph with Pinecone, Cohere, and Groq. Each sub-question is assigned exactly one tool — RAG or live stock data — and questions touching more than one company automatically fan out into parallel per-company sub-agents rather than running as one long chain.\n\nThe component that decides tool + fan-out shape is a small custom fine-tuned model — full engineering write-up under Model Engineering, below. This project is about what happens around it: the agent graph, the tool layer, and the synthesis step that turns retrieved evidence into a cited answer.\n\nProves: agentic orchestration, multi-tool routing, and a dynamic execution shape driven by the actual structure of the question — not a single fixed chain.',
+    tags:['LangGraph','Multi-Tool Routing','Parallel Fan-Out','FinTech'],
+    accentVar:'--signal', image:"images/IRB - Homepage.png", github:'https://github.com/NoProxyLabs/Investment-Research-Agent', live:'https://investment-research-bot.vercel.app/', hf:null
+  },
+  {
+    cat:'agentic', catLabel:'Healthcare Ops', title:'Clinic Operations Agent',
+    mech:'A clinic operations platform connecting staff workflows with a patient-facing WhatsApp agent through one shared backend.',
+    metric:'Tool-calling AI on real records · human approval on every consequential action',
+    desc:'Careflow Console connects a staff workspace with a patient-facing WhatsApp Agent on a shared backend. It stays deliberately on the administrative side of care — it does not diagnose, prescribe, or give treatment guidance.\n\nWhat it demonstrates:\n— Tool-calling AI that reads/proposes changes to real operational records, not ungrounded generation\n— One shared backend for staff web workflows and patient WhatsApp conversations\n— Human approval gates on consequential actions\n— Grounded policy/FAQ retrieval with citations and non-diagnostic safety boundaries\n— Document Agent: OCR, structured extraction, confidence reporting, mandatory staff review\n— Event-driven workflow automation and a patient pipeline board\n— WhatsApp intake, appointment requests, document intake, human handoff',
+    tags:['WhatsApp Agent','Document Agent','Tool-Calling AI','Human-Gated'],
+    accentVar:'--gate', image:"images/Healthcare thumbnail.png", github:'https://github.com/NoProxyLabs/Healthcare-Clinic-operations-system', live:'https://healthcare-clinic-operations-system-sandy.vercel.app/', hf:null
+  },
+  {
+    cat:'agentic', catLabel:'Reliability / DevOps', title:'AI Incident Investigation &amp; Remediation Agent',
+    mech:'An AI system that investigates production incidents, gathers evidence from live infrastructure, proposes a root cause, and verifies the fix after human approval.',
+    metric:'Incident detected → evidence gathered → root cause → approved remediation → verified fix',
+    desc:'AI-powered infrastructure intelligence that investigates real Dockerized services, Prometheus metrics, logs, deployment history, and dependency information — not a simulated environment.\n\nBacks five practices:\n— Orchestration Agents: a ReAct/LangGraph investigation agent that gathers evidence and decides what to check next\n— AI Operations / DevOps Intelligence: works against live infra signals\n— AI Reliability & Verification: groundedness checking, evidence tracking, confidence handling, post-remediation verification, regression capture\n— Human-in-the-Loop AI: the agent recommends but cannot execute remediation without explicit approval, with restricted actions and risk controls\n— Production AI Engineering: FastAPI + Docker + Redis + Qdrant + Prometheus + SSE',
+    tags:['Orchestration Agent','Observability','Human-Gated Remediation','Verification'],
+    accentVar:'--gate', image:null, github:'https://github.com/NoProxyLabs/Automated-Incidents-Analysis-Agent', live:'https://incident-agent-henna.vercel.app/', hf:null
+  },
+  {
+    cat:'agentic', catLabel:'Sales &amp; Voice', title:'Real Estate Sales Automation &amp; Voice Agent',
+    mech:'An AI sales system connecting lead qualification, property matching, CRM, email, and voice into one lead-to-booking workflow.',
+    metric:'Sales & CRM Agent + RAG matching + Email Agent + Voice Agent, one state-machine pipeline',
+    desc:'What this project proves:\n— Sales & CRM Agent: lead intake → ICP scoring → pipeline stages → enrichment → automated follow-up\n— RAG / Semantic Recommendation: matches lead preferences to real inventory via Gemini embeddings + pgvector, hard budget filtering plus semantic ranking\n— Email Agent: reads Gmail, distinguishes new inquiries from existing leads, matches listings, replies, follows up\n— Lead Enrichment: identifies and enriches business leads via Tavily/homepage data\n— AI Knowledge Assistant: a separate knowledge base for FAQs, with structured answers for sensitive factual questions instead of relying on similarity alone\n— Voice Agent: Twilio + Pipecat + Deepgram + Cartesia, state-controlled qualify → match → offer slot → booking → handoff\n— Production Engineering: event-driven architecture, idempotent webhooks, Postgres job queue, retries/dead-letter handling, consent checks, explicit state-machine guardrails',
+    tags:['Sales & CRM Agent','Voice Agent','Email Agent','RAG Matching'],
+    accentVar:'--signal', image:null, github:'https://github.com/NoProxyLabs/Real-Estate-Sales-Automation-and-Voice-Agent', live:'https://real-estate-ops-dashboard.vercel.app/', hf:null
+  },
+  {
+    cat:'model', catLabel:'Model Engineering · From-Scratch LM', title:'MiniLLM — a Modern Transformer, Built From Scratch',
+    mech:'An 18.5M-parameter decoder-only language model, trained from scratch on TinyStories, with every component — tokenizer, attention, positional embeddings, training loop — implemented and understood line by line.',
+    metric:'18.5M params · val loss 1.63 / perplexity 5.10',
+    desc:'Architecture: RMSNorm, RoPE, Grouped Query Attention (8 query heads / 2 KV heads), SwiGLU feed-forward, pre-norm blocks with residual connections, weight-tied embeddings, and a custom byte-level BPE tokenizer (16,000 vocab) trained from scratch.\n\nModel: 8 layers, d_model 384, context length 256, ~74MB fp32 / ~37MB fp16. Trained for 13,000 steps (~1 epoch) on 1,000,000 TinyStories examples (~220M tokens).\n\nThis is the from-scratch proof behind the fine-tuning and post-training work elsewhere on this page — nothing here was copied from an existing implementation.',
+    tags:['RoPE','GQA','SwiGLU','Custom BPE Tokenizer'],
+    accentVar:'--signal', image:null, github:'https://github.com/NoProxyLabs/MiniLLM-Transformer-from-scratch', live:'https://huggingface.co/spaces/IbrahimKhan7208/minillm-tinystories-demo', hf:'https://huggingface.co/IbrahimKhan7208/minillm-tinystories'
+  },
+  {
+    cat:'model', catLabel:'Model Engineering · Fine-Tuned Router', title:'Question-Decomposition Router (Qwen2.5-1.5B)',
+    mech:'The fine-tuned router behind the Investment Research Agent above — replaced a two-call, 120B-model pipeline with one call to a custom 1.5B model, trained CPT → SFT → GRPO with PyTorch + Unsloth.',
+    metric:'61.3% → 96.8% in-scope routing · 23.3% → 100% out-of-scope generalization · 2 calls → 1',
+    desc:'The original prototype used a 120B model for two separate calls: a classifier (decompose question → sub-questions + tool) and a filter-extractor (pull company/year/search-query per sub-question). Both are now one call to a custom fine-tuned router, deployed as its own Hugging Face Space endpoint.\n\nEvery sub-question gets exactly one tool; if a question genuinely needs more than one, the router splits it further instead of tagging a sub-question with multiple tools. The router\'s output also mechanically decides agentic shape — the number of unique companies across sub-questions triggers single-path vs. parallel per-company fan-out, deliberately not a semantic "does this sound like a comparison" judgment call.\n\nKnown limitation, left as a gap: alias/rename canonicalization (e.g. "Facebook" → "Meta") failed across several correction attempts during training. Ticker resolution for current company names works.',
+    tags:['Qwen2.5-1.5B','CPT → SFT → GRPO','Unsloth','HF Space Endpoint'],
+    accentVar:'--gate', image:null, github:null, live:'https://huggingface.co/spaces/IbrahimKhan7208/investment-research-router-space', hf:'https://huggingface.co/IbrahimKhan7208/investment-research-router'
+  },
+  {
+    cat:'model', catLabel:'Model Engineering · Pretrain + RL', title:'TinyZero Countdown Solver',
+    mech:'A ~19M-parameter transformer pretrained from scratch on a single Colab T4, then post-trained with GRPO to solve Countdown-style arithmetic problems.',
+    metric:'31.6% → 34.4% held-out accuracy after GRPO (+2.8pp, 250 problems)',
+    desc:'The first 116M-parameter model severely overfit from insufficient training data. It was redesigned to ~19M parameters with a custom 8,192-token BPE tokenizer and a ~20:1 token-to-parameter ratio.\n\nSFT looked successful by loss but generation accuracy dropped to 0% — a distribution shift between pretrained and instruction format. After multiple failed fixes (shorter outputs, rehearsal data, learning-rate changes, frozen embeddings), SFT was dropped in favor of GRPO directly on the pretrained format.\n\nGRPO used group sampling, reward shaping, group-relative advantage normalization, PPO-style clipping, and KL regularization, with a padding-mask bug fixed before the final run. Result: 26%→30% on 50 problems, 31.6%→34.4% on a larger 250-problem evaluation — a real but modest improvement, reported without overstating it.',
+    tags:['RoPE','GQA','SwiGLU','GRPO'],
+    accentVar:'--signal', image:null, github:'https://github.com/NoProxyLabs/Model-Pre-and-Post-Training', live:'https://tinyzero-countdown-n82mywstqwhswsgt2vm2bz.streamlit.app/', hf:'https://huggingface.co/simak31/tinyzero-countdown-19m'
+  }
+];
+
+/* Case-study copy follows the project briefs supplied for the portfolio. */
+var caseStudies = [
+  { intro:'A research system that turns complex financial questions into grounded, cited answers by dynamically choosing sources and execution paths.', sections:[
+    ['The Problem','Financial research often spans filings, live market data, multiple companies, and different kinds of questions. A single linear LLM call quickly becomes slow, brittle, and difficult to ground.'],
+    ['What We Built','We built a research system that turns a complex financial question into smaller, executable tasks.\n\nEach sub-question is routed to the right source — either retrieval over financial documents or live market data. When a question spans multiple companies, the system automatically changes its execution shape and runs company-level research in parallel before synthesizing the evidence into one cited answer.'],
+    ['How It Works','Question\n→ decomposition\n→ tool routing\n→ retrieval / market data\n→ parallel fan-out when required\n→ evidence collection\n→ cited synthesis','flow'],
+    ['Under the Hood','The orchestration layer is built with LangGraph, with Pinecone for retrieval, Cohere Rerank for ranking, and multiple LLM providers behind the workflow.\n\nA custom fine-tuned model handles routing decisions; the agent layer turns those decisions into actual execution, selecting tools, creating parallel work when needed, and combining evidence.'],
+    ['What This Demonstrates','Agentic orchestration\nDynamic workflow generation\nMulti-tool execution\nRAG + live data integration\nParallel sub-agent execution\nGrounded, cited generation\nCustom model + agent integration','list'],
+    ['What We Can Build From This','Research copilots\nInternal intelligence systems\nFinancial or market analysis tools\nMulti-source investigation workflows\nAgents that dynamically decide what to retrieve, call, and do next','list']
+  ]},
+  { intro:'A controlled operations layer connecting staff, patients, documents, and WhatsApp to the same real business state.', sections:[
+    ['The Problem','Healthcare operations often sit across staff dashboards, patient communication, documents, appointments, and manual approvals.\n\nConnecting those workflows is difficult enough without allowing an AI system to make uncontrolled changes to real operational data.'],
+    ['What We Built','Careflow connects a staff workspace and a patient-facing WhatsApp agent to the same operational backend.\n\nThe AI can retrieve information, work with operational records, process incoming documents, assist with appointment workflows, and handle patient conversations — while consequential actions remain behind explicit human approval. The system is intentionally focused on administration and operations, not diagnosis or treatment.'],
+    ['How It Works','Patient / Staff\n→ shared backend\n→ AI agent\n→ retrieval / tools / document processing\n→ proposed action\n→ human approval when required\n→ operational update','flow'],
+    ['Under the Hood','The platform combines tool-calling AI, grounded policy and FAQ retrieval, OCR, structured document extraction, confidence reporting, appointment workflows, event-driven automation, and controlled human handoff.\n\nThe same backend supports both the staff-facing application and the WhatsApp experience, so the AI operates against the same operational state instead of maintaining a separate conversation-only layer.'],
+    ['What This Demonstrates','Tool-calling against real application state\nHuman-in-the-loop controls\nWhatsApp AI integration\nDocument AI + OCR\nGrounded knowledge retrieval\nEvent-driven workflows\nStructured extraction + validation\nSafe AI boundaries for sensitive domains','list'],
+    ['What We Can Build From This','Patient communication systems\nInternal operations copilots\nWhatsApp business agents\nDocument intake pipelines\nApproval-driven AI workflows\nAI systems that safely operate on real business records','list']
+  ]},
+  { intro:'An evidence-driven investigation agent that correlates live infrastructure signals, recommends a fix, and verifies recovery.', sections:[
+    ['The Problem','Production incidents rarely come with one obvious signal.\n\nEngineers have to correlate logs, metrics, deployments, service dependencies, and recent changes before deciding what actually went wrong — then verify that a fix worked.'],
+    ['What We Built','We built an AI investigation system that works against real Dockerized infrastructure.\n\nInstead of generating a likely root cause from a fixed prompt, the agent investigates iteratively: it gathers evidence, decides what to inspect next, refines its hypothesis, and only proposes remediation once the evidence supports it.'],
+    ['How It Works','Incident\n→ evidence gathering\n→ hypothesis\n→ deeper investigation\n→ root cause\n→ approved remediation\n→ re-check original signals\n→ verified recovery','flow'],
+    ['Under the Hood','The investigation layer uses LangGraph with access to Prometheus metrics, logs, deployment history, and dependency information.\n\nRemediation is deliberately constrained. The agent can recommend a predefined action, but execution requires explicit human approval. After execution, the system re-runs the relevant checks instead of assuming the incident is resolved.'],
+    ['What This Demonstrates','Autonomous investigation\nObservability-aware agents\nEvidence-driven reasoning\nHuman-approved remediation\nPost-action verification\nSSE streaming\nRetries + dead-letter handling\nRegression capture\nExecution guardrails','list'],
+    ['What We Can Build From This','SRE and DevOps agents\nInternal investigation copilots\nInfrastructure monitoring assistants\nIncident response automation\nAI systems that can safely inspect and act on operational infrastructure','list']
+  ]},
+  { intro:'One lead-to-booking system that connects qualification, inventory, CRM, email, and voice without losing state between channels.', sections:[
+    ['The Problem','A lead can arrive through one channel, live in a CRM, need to be matched against inventory, receive follow-ups over email, and eventually require a phone conversation before booking.\n\nTreating each step as a separate automation creates fragmented state and inconsistent customer experiences.'],
+    ['What We Built','We built an end-to-end sales system that connects lead qualification, enrichment, inventory matching, CRM state, email, and voice into one workflow.\n\nThe system keeps the lead moving from first inquiry to appointment booking while different AI components handle the parts they are best suited for.'],
+    ['How It Works','Lead\n→ qualification + enrichment\n→ inventory matching\n→ CRM update\n→ email follow-up\n→ voice qualification\n→ appointment booking\n→ human handoff when needed','flow'],
+    ['Under the Hood','Lead preferences are matched against real inventory using embeddings, semantic retrieval, and hard business rules such as budget constraints.\n\nEmail automation reads and classifies incoming communication and continues the sales workflow. The voice layer uses Twilio, Pipecat, Deepgram, and Cartesia to qualify leads, present relevant properties, offer available slots, book appointments, and hand off when required.\n\nUnderneath the AI layer is an event-driven backend with idempotent webhooks, a Postgres job queue, retries, dead-letter handling, consent checks, and explicit call-state guardrails.'],
+    ['What This Demonstrates','AI sales agents\nCRM automation\nSemantic recommendation\nEmail agents\nVoice agents\nRAG-based knowledge assistants\nEvent-driven backend architecture\nStateful multi-channel workflows\nProduction guardrails','list'],
+    ['What We Can Build From This','AI sales systems\nLead qualification pipelines\nCRM copilots\nVoice sales agents\nAppointment-booking agents\nOmnichannel customer workflows\nRecommendation systems connected to real business inventory','list']
+  ]},
+  { intro:'A decoder-only Transformer built from first principles to understand the full stack behind modern model engineering.', sections:[
+    ['The Goal','Instead of fine-tuning an existing model and treating the architecture as a black box, we wanted to understand the full path from raw text to a working language model.'],
+    ['What We Built','An 18.5M-parameter decoder-only Transformer trained from scratch on TinyStories.\n\nThe implementation includes the tokenizer, model architecture, attention mechanism, positional encoding, normalization, training pipeline, and data processing — without relying on an existing model implementation.'],
+    ['Engineering Details','Tokenizer\n16,000-vocabulary byte-level BPE trained from scratch\n\nArchitecture\n8 layers · 384 d_model · 256 context length\n\nAttention\n8 query heads · 2 KV heads · Grouped Query Attention\n\nCore components\nRoPE · RMSNorm · SwiGLU · residual connections · tied embeddings\n\nTraining\n~220M tokens · 13,000 steps · TinyStories','flow'],
+    ['Result','18.5M parameters\nValidation loss: 1.63\nPerplexity: 5.10','flow'],
+    ['Why It Matters','This project gives us the model-level understanding behind the post-training work elsewhere in the portfolio.\n\nFine-tuning, routing, and reinforcement learning are not treated as API-layer operations — we understand the model and training stack underneath them.']
+  ]},
+  { intro:'A specialized small model that replaces a costly two-call routing path with one explicit, deployable decision.', sections:[
+    ['The Problem','The original Investment Research system used a large 120B model for two separate decisions: classify and decompose the question, then extract the structured information needed to run the workflow.\n\nThat added latency, cost, and another model dependency directly inside the critical execution path.'],
+    ['What We Built','We trained a dedicated Qwen2.5-1.5B router to replace both calls with one specialized model.\n\nThe model produces structured routing decisions that determine which tool each sub-question should use and what execution shape the agent should take.'],
+    ['Training & Engineering','Training pipeline\nCPT → SFT → GRPO\n\nModel\nQwen2.5-1.5B\n\nFine-tuning\nLoRA with Unsloth\n\nOutput\nStructured routing decisions\n\nDeployment\nIndependent Hugging Face endpoint','flow'],
+    ['Result','In-scope routing accuracy\n61.3% → 96.8%\n\nOut-of-scope generalization\n23.3% → 100%\n\nModel calls\n2 → 1','flow'],
+    ['What We Learned','The model still has a known limitation: alias and rename canonicalization, such as mapping “Facebook” to “Meta”, remained unreliable across correction attempts.\n\nWe kept the failure visible because understanding where a specialized model breaks is part of building a reliable model-powered system.'],
+    ['What This Demonstrates','Domain-specific model specialization\nCPT / SFT / GRPO\nStructured model outputs\nModel-based workflow routing\nInference optimization\nCustom model deployment\nIntegrating trained models into agent systems','list']
+  ]},
+  { intro:'A candid model-training experiment tracing pretraining, failed post-training paths, and a measured GRPO improvement.', sections:[
+    ['The Problem','The goal was to study what actually happens when a small language model is pretrained and then post-trained with reinforcement learning — including the failures that usually get hidden behind final metrics.'],
+    ['What We Built','A small Transformer pretrained from scratch and then post-trained with GRPO to solve Countdown-style arithmetic problems.\n\nThe experiment covered model sizing, tokenizer design, pretraining, SFT diagnostics, reward design, GRPO training, and held-out evaluation.'],
+    ['Experiment Path','Initial model\n116M parameters → severe overfitting\n\nRedesign\n~19M parameters + custom 8,192-token BPE\n\nSFT\nLoss improved, but generation accuracy collapsed to 0%\n\nDiagnosis\nDistribution shift between pretrained and instruction formats\n\nFinal approach\nGRPO directly on the pretrained format','flow'],
+    ['Result','50-problem evaluation\n26% → 30%\n\n250-problem held-out evaluation\n31.6% → 34.4%\n\nImprovement\n+2.8 percentage points','flow'],
+    ['Why It Matters','The important result here is not a huge benchmark number.\n\nIt shows the kind of model-engineering work required when a training run does not behave as expected: tracing the failure, changing the experiment, fixing implementation issues, and measuring the result without overstating it.'],
+    ['What This Demonstrates','Pretraining from scratch\nPost-training experimentation\nGRPO implementation\nReward design\nTraining diagnostics\nDistribution-shift analysis\nFailure-driven iteration\nSmall-model experimentation','list']
+  ]}
+];
+
+function renderList(containerId, cat){
+  var el = document.getElementById(containerId);
+  projects.filter(function(p){ return p.cat === cat; }).forEach(function(p,i){
+    var row = document.createElement('button');
+    row.className = 'case-row reveal';
+    var idx = (i<9?'0':'')+(i+1);
+    row.innerHTML =
+      '<span class="case-idx">'+idx+'</span>'+
+      '<span class="case-main"><span class="case-cat">'+p.catLabel+'</span><h3>'+p.title+'</h3><p class="case-mech">'+p.mech+'</p></span>'+
+      '<span class="case-arrow" aria-hidden="true">&#8594;</span>';
+    row.addEventListener('click', function(){ openDrawer(p); });
+    el.appendChild(row);
+  });
+}
+function renderStatCards(containerId, cat){
+  var el = document.getElementById(containerId);
+  projects.filter(function(p){ return p.cat === cat; }).forEach(function(p){
+    var card = document.createElement('button');
+    card.className = 'stat-card reveal';
+    var metricClass = p.accentVar === '--gate' ? ' gate' : '';
+    card.innerHTML =
+      '<div class="stat-cat">'+p.catLabel+'</div>'+
+      '<div class="stat-metric'+metricClass+'">'+p.metric+'</div>'+
+      '<svg class="stat-underline" viewBox="0 0 100 4" preserveAspectRatio="none"><line x1="0" y1="2" x2="100" y2="2" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" stroke-linecap="round"/></svg>'+
+      '<h3>'+p.title+'</h3>'+
+      '<p class="stat-mech">'+p.mech+'</p>'+
+      '<div class="stat-tags">'+p.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div>';
+    card.addEventListener('click', function(){ openDrawer(p); });
+    el.appendChild(card);
+  });
+}
+renderList('agenticList','agentic');
+renderStatCards('modelGrid','model');
+
+/* ================= LENIS SMOOTH SCROLL ================= */
+var lenisInstance = null;
+if(!REDUCED_MOTION && window.Lenis && window.gsap){
+  lenisInstance = new Lenis({
+    duration: 1.05,
+    easing: function(t){ return 1 - Math.pow(1 - t, 3); },
+    smoothWheel: true,
+    autoRaf: false,
+    anchors: true
+  });
+  if(window.ScrollTrigger){ lenisInstance.on('scroll', ScrollTrigger.update); }
+  gsap.ticker.add(function(time){ lenisInstance.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+}
+
+/* ================= SCROLL PROGRESS BAR ================= */
+if(window.gsap && window.ScrollTrigger){
+  ScrollTrigger.create({
+    trigger: document.body, start:'top top', end:'bottom bottom',
+    onUpdate: function(self){ gsap.set('#scrollProgress', { scaleX: self.progress }); }
+  });
+}
+
+/* ================= NAV SCROLLSPY ================= */
+(function(){
+  var nav = document.querySelector('header.nav');
+  function updateNavState(){
+    nav.classList.toggle('is-floating', window.scrollY > 24);
+  }
+  updateNavState();
+  window.addEventListener('scroll', updateNavState, { passive:true });
+
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var underline = document.getElementById('navUnderline');
+  if(!navLinks.length || !underline) return;
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function setActive(link){
+    navLinks.forEach(function(a){ a.classList.remove('is-active'); });
+    if(!link){ underline.style.opacity = 0; return; }
+    link.classList.add('is-active');
+    underline.style.opacity = 1;
+    underline.style.width = link.offsetWidth + 'px';
+    underline.style.transform = 'translateX(' + link.offsetLeft + 'px)';
+  }
+  if(window.gsap && window.ScrollTrigger){
+    sections.forEach(function(sec, i){
+      if(!sec) return;
+      ScrollTrigger.create({
+        trigger: sec, start:'top 45%', end:'bottom 45%',
+        onEnter: function(){ setActive(navLinks[i]); },
+        onEnterBack: function(){ setActive(navLinks[i]); }
+      });
+    });
+  }
+  window.addEventListener('resize', function(){
+    var active = document.querySelector('.nav-links a.is-active');
+    if(active) setActive(active);
+  });
+})();
+
+/* ================= DRAWER ================= */
+var drawer = document.getElementById('projectDrawer');
+var backdrop = document.getElementById('drawerBackdrop');
+var drawerItems = drawer.querySelectorAll('.drawer-item');
+var drawerLinksHeaderEl = document.getElementById('drawerLinks');
+var drawerMetricEl = document.getElementById('drawerMetric');
+var drawerSummaryEl = document.getElementById('drawerSummary');
+var drawerTagsEl = document.getElementById('drawerTags');
+
+function openDrawer(p){
+  var visualEl = document.getElementById('drawerVisual');
+  var study = caseStudies[projects.indexOf(p)];
+  if(p.image){
+    visualEl.style.display = 'block';
+    visualEl.innerHTML = '<img src="'+p.image+'" alt="'+p.title+'">';
+    drawer.classList.remove('no-media');
+  } else {
+    visualEl.style.display = 'none';
+    visualEl.innerHTML = '';
+    drawer.classList.add('no-media');
+  }
+  document.getElementById('drawerCat').textContent = p.catLabel.replace(/&amp;/g,'&');
+  document.getElementById('drawerTitle').innerHTML = p.title;
+  var projectColor = p.accentVar === '--gate' ? 'var(--gate)' : 'var(--accent)';
+  drawer.style.setProperty('--project-accent', projectColor);
+
+  drawerMetricEl.style.display = '';
+  drawerMetricEl.textContent = p.metric;
+  drawerMetricEl.style.color = projectColor;
+
+  drawerSummaryEl.style.display = '';
+  drawerSummaryEl.textContent = study ? study.intro : p.mech;
+
+  drawerTagsEl.style.display = '';
+  drawerTagsEl.innerHTML = p.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('');
+
+  document.getElementById('caseStudy').innerHTML = study ?
+    '<div class="case-study-title">Case study</div>' + study.sections.map(function(section){
+      var type = section[2] ? ' '+section[2] : '';
+      var content = section[1];
+      if(section[2] === 'list') content = content.split('\n').map(function(item){ return '<span>'+item+'</span>'; }).join('');
+      return '<section class="case-section'+type+'"><h4>'+section[0]+'</h4><div class="case-section-content">'+content+'</div></section>';
+    }).join('') : '';
+
+  var links = '';
+  if(p.github) links += '<a href="'+p.github+'" target="_blank" rel="noopener">GitHub</a>';
+  if(p.live) links += '<a href="'+p.live+'" target="_blank" rel="noopener">Live demo</a>';
+  if(p.hf) links += '<a href="'+p.hf+'" target="_blank" rel="noopener">Hugging Face</a>';
+  drawerLinksHeaderEl.innerHTML = links;
+  drawerLinksHeaderEl.style.display = links ? 'flex' : 'none';
+
+  showDrawerShell();
+  drawer.scrollTop = 0;
+  gsap.fromTo(drawerItems, { opacity:0, y:14 }, { opacity:1, y:0, duration:.4, stagger:.045, delay:.18, ease:'power2.out' });
+}
+
+/* ---- Service drawer: same physical drawer, lighter "capabilities" content ---- */
+function openServiceDrawer(service){
+  var visualEl = document.getElementById('drawerVisual');
+  visualEl.style.display = 'none';
+  visualEl.innerHTML = '';
+  drawer.classList.add('no-media');
+
+  document.getElementById('drawerCat').textContent = 'Service';
+  document.getElementById('drawerTitle').innerHTML = service.name;
+  var serviceColor = service.cls === 'gate' ? 'var(--gate)' : (service.cls === 'data' ? 'var(--accent-2)' : 'var(--accent)');
+  drawer.style.setProperty('--project-accent', serviceColor);
+
+  drawerMetricEl.style.display = 'none';
+  drawerMetricEl.textContent = '';
+
+  drawerSummaryEl.style.display = '';
+  drawerSummaryEl.textContent = service.p;
+
+  drawerTagsEl.style.display = 'none';
+  drawerTagsEl.innerHTML = '';
+
+  drawerLinksHeaderEl.innerHTML = '';
+  drawerLinksHeaderEl.style.display = 'none';
+
+  var buildList = service.build.map(function(item){ return '<span>'+item+'</span>'; }).join('');
+  var proofLinks = (service.proofProjects || []).map(function(idx){
+    var proj = projects[idx];
+    if(!proj) return '';
+    return '<button type="button" class="proof-link" data-project-idx="'+idx+'">'+proj.title.replace(/&amp;/g,'&')+' →</button>';
+  }).join('');
+
+  document.getElementById('caseStudy').innerHTML =
+    '<div class="case-study-title">What this service covers</div>'+
+    '<section class="case-section list"><h4>What we build</h4><div class="case-section-content">'+buildList+'</div></section>'+
+    '<section class="case-section flow"><h4>Typical workflows</h4><div class="case-section-content">'+service.workflows+'</div></section>'+
+    '<section class="case-section proof"><h4>Proof</h4><div class="case-section-content">'+service.proofText+
+      '<div class="proof-links">'+proofLinks+'</div>'+
+    '</div></section>';
+
+  document.getElementById('caseStudy').querySelectorAll('.proof-link').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var idx = parseInt(btn.getAttribute('data-project-idx'), 10);
+      if(!isNaN(idx) && projects[idx]) openDrawer(projects[idx]);
+    });
+  });
+
+  showDrawerShell();
+  drawer.scrollTop = 0;
+  gsap.fromTo(drawerItems, { opacity:0, y:14 }, { opacity:1, y:0, duration:.4, stagger:.045, delay:.18, ease:'power2.out' });
+}
+
+function showDrawerShell(){
+  drawer.style.visibility = 'visible';
+  drawer.setAttribute('aria-hidden','false');
+  backdrop.style.visibility = 'visible';
+  backdrop.style.pointerEvents = 'auto';
+  document.body.style.overflow = 'hidden';
+  if(lenisInstance) lenisInstance.stop();
+
+  gsap.to(backdrop, { opacity:1, duration:.35, ease:'power2.out' });
+  gsap.to(drawer, { y:0, scale:1, duration:.55, ease:'power4.out' });
+}
+function closeDrawer(){
+  gsap.to(backdrop, { opacity:0, duration:.3, ease:'power2.in', onComplete:function(){ backdrop.style.visibility='hidden'; backdrop.style.pointerEvents='none'; } });
+  gsap.to(drawer, { y:28, scale:.98, duration:.35, ease:'power3.in', onComplete:function(){ drawer.style.visibility='hidden'; drawer.setAttribute('aria-hidden','true'); } });
+  document.body.style.overflow = '';
+  if(lenisInstance) lenisInstance.start();
+}
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+backdrop.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDrawer(); });
+gsap.set(drawer, { y:28, scale:.98 });
+
+/* ================= HERO ENTRANCE ================= */
+(function(){
+  var heroEls = document.querySelectorAll('.hero-inner .eyebrow, .hero-headline, .hero-sub, .hero-actions .btn, .hero-visual');
+  // safety net first: guarantee everything is visible even if GSAP fails to load or errors out
+  heroEls.forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+
+  if(REDUCED_MOTION || !window.gsap){
+    return;
+  }
+
+  gsap.set('.hero-inner .eyebrow', { opacity:0, y:8 });
+  gsap.set('.hero-headline', { opacity:0, y:24 });
+  gsap.set('.hero-sub', { opacity:0, y:14 });
+  gsap.set('.hero-actions .btn', { opacity:0, y:10 });
+  gsap.set('.hero-visual', { opacity:0, y:20 });
+
+  var tl = gsap.timeline({ delay:.15 });
+  tl.to('.hero-inner .eyebrow', { opacity:1, y:0, duration:.5, ease:'power2.out' })
+    .to('.hero-headline', { opacity:1, y:0, duration:.8, ease:'power3.out' }, '-=.25')
+    .to('.hero-sub', { opacity:1, y:0, duration:.6, ease:'power2.out' }, '-=.45')
+    .to('.hero-actions .btn', { opacity:1, y:0, duration:.5, ease:'power2.out', stagger:.08 }, '-=.35')
+    .to('.hero-visual', { opacity:1, y:0, duration:.6, ease:'power2.out' }, '-=.25');
+})();
+
+/* ================= TIMELINE SCROLL-LINKED DRAW ================= */
+if(!REDUCED_MOTION && window.gsap && window.ScrollTrigger && window.innerWidth > 800){
+  gsap.to('#timelineFill', {
+    scaleX:1, ease:'none',
+    scrollTrigger:{ trigger:'#timeline', start:'top 75%', end:'bottom 60%', scrub:.6 }
+  });
+  ['#node1','#node2','#node3'].forEach(function(sel, i){
+    gsap.to(sel, {
+      scale:1, opacity:1, duration:.5, ease:'back.out(2)', delay:i*.15,
+      scrollTrigger:{ trigger:'#timeline', start:'top 75%' }
+    });
+  });
+} else {
+  document.querySelectorAll('.timeline-node').forEach(function(n){ n.style.opacity=1; n.style.transform='scale(1)'; });
+  var fillEl = document.getElementById('timelineFill');
+  if(fillEl) fillEl.style.transform = 'scaleX(1)';
+}
+
+/* ================= STAT UNDERLINE DRAW ================= */
+if(!REDUCED_MOTION && window.gsap && window.ScrollTrigger){
+  gsap.utils.toArray('.stat-underline line').forEach(function(line){
+    gsap.to(line, { strokeDashoffset:0, duration:1, ease:'power2.out',
+      scrollTrigger:{ trigger:line, start:'top 92%' } });
+  });
+} else {
+  document.querySelectorAll('.stat-underline line').forEach(function(l){ l.style.strokeDashoffset = 0; });
+}
+
+/* ================= MAGNETIC BUTTONS ================= */
+document.querySelectorAll('[data-magnetic]').forEach(function(btn){
+  var xTo = gsap.quickTo(btn, 'x', { duration:.4, ease:'power3' });
+  var yTo = gsap.quickTo(btn, 'y', { duration:.4, ease:'power3' });
+  btn.addEventListener('mousemove', function(e){
+    var r = btn.getBoundingClientRect();
+    var relX = e.clientX - (r.left + r.width/2);
+    var relY = e.clientY - (r.top + r.height/2);
+    xTo(relX * 0.25);
+    yTo(relY * 0.45);
+  });
+  btn.addEventListener('mouseleave', function(){ xTo(0); yTo(0); });
+});
+
+/* ================= CUSTOM CURSOR (soft glow) ================= */
+(function(){
+  var coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  if(REDUCED_MOTION || coarse || !window.gsap) return;
+  var glow = document.createElement('div'); glow.className = 'cursor-glow';
+  document.body.appendChild(glow);
+  var mx=-100,my=-100, rx=-100, ry=-100;
+  window.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
+  gsap.ticker.add(function(){
+    rx += (mx-rx)*0.16; ry += (my-ry)*0.16;
+    glow.style.left = rx+'px'; glow.style.top = ry+'px';
+  });
+  var interactiveSelector = 'a, button, .tile, .case-row, .stat-card, [data-magnetic]';
+  document.addEventListener('mouseover', function(e){
+    if(e.target.closest && e.target.closest(interactiveSelector)) glow.classList.add('is-active');
+  });
+  document.addEventListener('mouseout', function(e){
+    if(e.target.closest && e.target.closest(interactiveSelector)) glow.classList.remove('is-active');
+  });
+})();
+
+/* ================= FOOTER EASTER EGG (decode on hover) ================= */
+(function(){
+  var egg = document.querySelector('.footer-egg');
+  if(!egg || REDUCED_MOTION) return;
+  var original = egg.textContent;
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01./_';
+  var running = false;
+  egg.addEventListener('mouseenter', function(){
+    if(running) return;
+    running = true;
+    var frame = 0, totalFrames = 14;
+    var iv = setInterval(function(){
+      frame++;
+      var revealCount = Math.floor(original.length * (frame / totalFrames));
+      var out = '';
+      for(var i = 0; i < original.length; i++){
+        out += (i < revealCount || original[i] === ' ') ? original[i] : chars[Math.floor(Math.random() * chars.length)];
+      }
+      egg.textContent = out;
+      if(frame >= totalFrames){ clearInterval(iv); egg.textContent = original; running = false; }
+    }, 28);
+  });
+})();
+
+/* ================= SCROLL REVEALS ================= */
+if(!REDUCED_MOTION && window.gsap && window.ScrollTrigger){
+  gsap.utils.toArray('.reveal').forEach(function(el){
+    gsap.to(el, {
+      opacity:1, y:0, duration:.65, ease:'power3.out',
+      scrollTrigger:{ trigger:el, start:'top 92%', toggleActions:'play none none none' }
+    });
+  });
+} else {
+  document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity=1; el.style.transform='none'; });
+}
+
+/* ================= REFRESH AFTER FONTS LOAD ================= */
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){ if(window.ScrollTrigger) ScrollTrigger.refresh(); });
+}
+</script>
+</body>
+</html>
