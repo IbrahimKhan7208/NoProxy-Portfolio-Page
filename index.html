@@ -865,14 +865,6 @@ roster.forEach(function(r,i){
    you send the real GitHub / Live / HuggingFace URLs. */
 var projects = [
   {
-    cat:'agentic', catLabel:'FinTech', title:'Investment Research Agent',
-    mech:'A multi-agent research system that breaks complex financial questions into smaller tasks, routes each task to the right source, runs parallel research when needed, and produces cited answers.',
-    metric:'Decompose → route (RAG or live market data) → parallel fan-out when needed → cited synthesis',
-    desc:'Built on LangGraph with Pinecone, Cohere, and Groq. Each sub-question is assigned exactly one tool — RAG or live stock data — and questions touching more than one company automatically fan out into parallel per-company sub-agents rather than running as one long chain.\n\nThe component that decides tool + fan-out shape is a small custom fine-tuned model — full engineering write-up under Model Engineering, below. This project is about what happens around it: the agent graph, the tool layer, and the synthesis step that turns retrieved evidence into a cited answer.\n\nProves: agentic orchestration, multi-tool routing, and a dynamic execution shape driven by the actual structure of the question — not a single fixed chain.',
-    tags:['LangGraph','Multi-Tool Routing','Parallel Fan-Out','FinTech'],
-    accentVar:'--signal', image:"images/IRB - Homepage.png", video:'images/IRB Walkthrough video - Final.mp4', github:'https://github.com/NoProxyLabs/Investment-Research-Agent', live:'https://investment-research-bot.vercel.app/', hf:null
-  },
-  {
     cat:'agentic', catLabel:'Healthcare Ops', title:'Clinic Workflow Automation Agent',
     mech:'A clinic operations platform connecting staff workflows with a patient-facing WhatsApp agent through one shared backend.',
     metric:'Tool-calling AI on real records · human approval on every consequential action',
@@ -881,20 +873,28 @@ var projects = [
     accentVar:'--gate', image:"images/Healthcare homepage.png", video:"images/Healthcare Walkthrough video - Final.mp4",github:'https://github.com/NoProxyLabs/Healthcare-Clinic-operations-system', live:'https://healthcare-clinic-operations-system.vercel.app/', hf:null
   },
   {
-    cat:'agentic', catLabel:'Reliability / DevOps', title:'AI Incident Investigation &amp; Remediation Agent',
-    mech:'An AI system that investigates production incidents, gathers evidence from live infrastructure, proposes a root cause, and verifies the fix after human approval.',
-    metric:'Incident detected → evidence gathered → root cause → approved remediation → verified fix',
-    desc:'AI-powered infrastructure intelligence that investigates real Dockerized services, Prometheus metrics, logs, deployment history, and dependency information — not a simulated environment.\n\nBacks five practices:\n— Orchestration Agents: a ReAct/LangGraph investigation agent that gathers evidence and decides what to check next\n— AI Operations / DevOps Intelligence: works against live infra signals\n— AI Reliability & Verification: groundedness checking, evidence tracking, confidence handling, post-remediation verification, regression capture\n— Human-in-the-Loop AI: the agent recommends but cannot execute remediation without explicit approval, with restricted actions and risk controls\n— Production AI Engineering: FastAPI + Docker + Redis + Qdrant + Prometheus + SSE',
-    tags:['Orchestration Agent','Observability','Human-Gated Remediation','Verification'],
-    accentVar:'--gate', image:'images/Incident homepage.png', video:"images/Incident Walkthrough video.mp4", github:'https://github.com/NoProxyLabs/Automated-Incidents-Analysis-Agent', live:'https://incident-agent-henna.vercel.app/', hf:null
-  },
-  {
     cat:'agentic', catLabel:'Sales &amp; Voice', title:'Real Estate Sales Automation &amp; Voice Agent',
     mech:'An AI sales system connecting lead qualification, property matching, CRM, email, and voice into one lead-to-booking workflow.',
     metric:'Sales & CRM Agent + RAG matching + Email Agent + Voice Agent, one state-machine pipeline',
     desc:'What this project proves:\n— Sales & CRM Agent: lead intake → ICP scoring → pipeline stages → enrichment → automated follow-up\n— RAG / Semantic Recommendation: matches lead preferences to real inventory via Gemini embeddings + pgvector, hard budget filtering plus semantic ranking\n— Email Agent: reads Gmail, distinguishes new inquiries from existing leads, matches listings, replies, follows up\n— Lead Enrichment: identifies and enriches business leads via Tavily/homepage data\n— AI Knowledge Assistant: a separate knowledge base for FAQs, with structured answers for sensitive factual questions instead of relying on similarity alone\n— Voice Agent: Twilio + Pipecat + Deepgram + Cartesia, state-controlled qualify → match → offer slot → booking → handoff\n— Production Engineering: event-driven architecture, idempotent webhooks, Postgres job queue, retries/dead-letter handling, consent checks, explicit state-machine guardrails',
     tags:['Sales & CRM Agent','Voice Agent','Email Agent','RAG Matching'],
     accentVar:'--signal', image:'images/real estate homepage.png', video:"images/Real Estate Walkthrough video.mp4", github:'https://github.com/NoProxyLabs/Real-Estate-Sales-Automation-and-Voice-Agent', live:'https://real-estate-ops-dashboard.vercel.app/', hf:null
+  },
+  {
+    cat:'agentic', catLabel:'FinTech', title:'Investment Research Agent',
+    mech:'A multi-agent research system that breaks complex financial questions into smaller tasks, routes each task to the right source, runs parallel research when needed, and produces cited answers.',
+    metric:'Decompose → route (RAG or live market data) → parallel fan-out when needed → cited synthesis',
+    desc:'Built on LangGraph with Pinecone, Cohere, and Groq. Each sub-question is assigned exactly one tool — RAG or live stock data — and questions touching more than one company automatically fan out into parallel per-company sub-agents rather than running as one long chain.\n\nThe component that decides tool + fan-out shape is a small custom fine-tuned model — full engineering write-up under Model Engineering, below. This project is about what happens around it: the agent graph, the tool layer, and the synthesis step that turns retrieved evidence into a cited answer.\n\nProves: agentic orchestration, multi-tool routing, and a dynamic execution shape driven by the actual structure of the question — not a single fixed chain.',
+    tags:['LangGraph','Multi-Tool Routing','Parallel Fan-Out','FinTech'],
+    accentVar:'--signal', image:"images/IRB - Homepage.png", video:'images/IRB Walkthrough video - Final.mp4', github:'https://github.com/NoProxyLabs/Investment-Research-Agent', live:'https://investment-research-bot.vercel.app/', hf:null
+  },
+  {
+    cat:'agentic', catLabel:'Reliability / DevOps', title:'AI Incident Investigation &amp; Remediation Agent',
+    mech:'An AI system that investigates production incidents, gathers evidence from live infrastructure, proposes a root cause, and verifies the fix after human approval.',
+    metric:'Incident detected → evidence gathered → root cause → approved remediation → verified fix',
+    desc:'AI-powered infrastructure intelligence that investigates real Dockerized services, Prometheus metrics, logs, deployment history, and dependency information — not a simulated environment.\n\nBacks five practices:\n— Orchestration Agents: a ReAct/LangGraph investigation agent that gathers evidence and decides what to check next\n— AI Operations / DevOps Intelligence: works against live infra signals\n— AI Reliability & Verification: groundedness checking, evidence tracking, confidence handling, post-remediation verification, regression capture\n— Human-in-the-Loop AI: the agent recommends but cannot execute remediation without explicit approval, with restricted actions and risk controls\n— Production AI Engineering: FastAPI + Docker + Redis + Qdrant + Prometheus + SSE',
+    tags:['Orchestration Agent','Observability','Human-Gated Remediation','Verification'],
+    accentVar:'--gate', image:'images/Incident homepage.png', video:"images/Incident Walkthrough video.mp4", github:'https://github.com/NoProxyLabs/Automated-Incidents-Analysis-Agent', live:'https://incident-agent-henna.vercel.app/', hf:null
   },
   {
     cat:'model', catLabel:'Model Engineering · From-Scratch LM', title:'MiniLLM — a Modern Transformer, Built From Scratch',
