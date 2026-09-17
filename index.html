@@ -474,6 +474,7 @@ footer{ padding:44px 0 32px; }
 .drawer.no-media .drawer-top{ grid-template-columns:minmax(0,760px); }
 .drawer-visual{ width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; border:1px solid var(--border-strong); background:#080a0e; box-shadow:0 24px 52px -30px rgba(0,0,0,.8); }
 .drawer-visual img{ width:100%; height:100%; object-fit:contain; }
+.drawer-visual video{ width:100%; height:100%; object-fit:contain; display:block; background:#000; }
 .drawer-visual:empty{ display:none; }
 .drawer-cat{ font-family:var(--mono); font-size:11px; color:var(--accent); margin-bottom:12px; letter-spacing:.05em; text-transform:uppercase; }
 .drawer h3{ font-size:clamp(28px,3vw,42px); margin-bottom:18px; line-height:1.12; }
@@ -714,8 +715,7 @@ html[data-theme="light"] .brand img, html[data-theme="light"] .footer-brand img{
       <h2>Have a workflow worth automating properly?</h2>
       <p class="lede">Tell us what you're trying to build, what your current system looks like, or where it's breaking. We'll tell you what we'd build — and if AI isn't the right answer, we'll say that too.</p>
       <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
-        <a href="mailto:noproxylabs@gmail.com" class="btn btn-primary" data-magnetic>noproxylabs@gmail.com</a>
-        <a href="https://www.upwork.com/agencies/2094907320783036273/" target="_blank" rel="noopener" class="btn btn-ghost">Hire us on Upwork</a>
+        <a href="https://www.upwork.com/agencies/2094907320783036273/" class="btn btn-primary" data-magnetic>Hire us on Upwork</a>
       </div>
     </div>
   </section>
@@ -870,7 +870,7 @@ var projects = [
     metric:'Decompose → route (RAG or live market data) → parallel fan-out when needed → cited synthesis',
     desc:'Built on LangGraph with Pinecone, Cohere, and Groq. Each sub-question is assigned exactly one tool — RAG or live stock data — and questions touching more than one company automatically fan out into parallel per-company sub-agents rather than running as one long chain.\n\nThe component that decides tool + fan-out shape is a small custom fine-tuned model — full engineering write-up under Model Engineering, below. This project is about what happens around it: the agent graph, the tool layer, and the synthesis step that turns retrieved evidence into a cited answer.\n\nProves: agentic orchestration, multi-tool routing, and a dynamic execution shape driven by the actual structure of the question — not a single fixed chain.',
     tags:['LangGraph','Multi-Tool Routing','Parallel Fan-Out','FinTech'],
-    accentVar:'--signal', image:"images/IRB - Homepage.png", github:'https://github.com/NoProxyLabs/Investment-Research-Agent', live:'https://investment-research-bot.vercel.app/', hf:null
+    accentVar:'--signal', image:"images/IRB - Homepage.png", video:'images/IRB Walkthrough video - Final.mp4', github:'https://github.com/NoProxyLabs/Investment-Research-Agent', live:'https://investment-research-bot.vercel.app/', hf:null
   },
   {
     cat:'agentic', catLabel:'Healthcare Ops', title:'Clinic Workflow Automation Agent',
@@ -878,7 +878,7 @@ var projects = [
     metric:'Tool-calling AI on real records · human approval on every consequential action',
     desc:'Careflow Console connects a staff workspace with a patient-facing WhatsApp Agent on a shared backend. It stays deliberately on the administrative side of care — it does not diagnose, prescribe, or give treatment guidance.\n\nWhat it demonstrates:\n— Tool-calling AI that reads/proposes changes to real operational records, not ungrounded generation\n— One shared backend for staff web workflows and patient WhatsApp conversations\n— Human approval gates on consequential actions\n— Grounded policy/FAQ retrieval with citations and non-diagnostic safety boundaries\n— Document Agent: OCR, structured extraction, confidence reporting, mandatory staff review\n— Event-driven workflow automation and a patient pipeline board\n— WhatsApp intake, appointment requests, document intake, human handoff',
     tags:['WhatsApp Agent','Document Agent','Tool-Calling AI','Human-Gated'],
-    accentVar:'--gate', image:"images/Healthcare homepage.png", github:'https://github.com/NoProxyLabs/Healthcare-Clinic-operations-system', live:'https://healthcare-clinic-operations-system.vercel.app/', hf:null
+    accentVar:'--gate', image:"images/Healthcare homepage.png", video:"images/Healthcare Walkthrough video - Final.mp4",github:'https://github.com/NoProxyLabs/Healthcare-Clinic-operations-system', live:'https://healthcare-clinic-operations-system.vercel.app/', hf:null
   },
   {
     cat:'agentic', catLabel:'Reliability / DevOps', title:'AI Incident Investigation &amp; Remediation Agent',
@@ -886,7 +886,7 @@ var projects = [
     metric:'Incident detected → evidence gathered → root cause → approved remediation → verified fix',
     desc:'AI-powered infrastructure intelligence that investigates real Dockerized services, Prometheus metrics, logs, deployment history, and dependency information — not a simulated environment.\n\nBacks five practices:\n— Orchestration Agents: a ReAct/LangGraph investigation agent that gathers evidence and decides what to check next\n— AI Operations / DevOps Intelligence: works against live infra signals\n— AI Reliability & Verification: groundedness checking, evidence tracking, confidence handling, post-remediation verification, regression capture\n— Human-in-the-Loop AI: the agent recommends but cannot execute remediation without explicit approval, with restricted actions and risk controls\n— Production AI Engineering: FastAPI + Docker + Redis + Qdrant + Prometheus + SSE',
     tags:['Orchestration Agent','Observability','Human-Gated Remediation','Verification'],
-    accentVar:'--gate', image:'images/Incident homepage.png', github:'https://github.com/NoProxyLabs/Automated-Incidents-Analysis-Agent', live:'https://incident-agent-henna.vercel.app/', hf:null
+    accentVar:'--gate', image:'images/Incident homepage.png', video:"images/Incident Walkthrough video.mp4", github:'https://github.com/NoProxyLabs/Automated-Incidents-Analysis-Agent', live:'https://incident-agent-henna.vercel.app/', hf:null
   },
   {
     cat:'agentic', catLabel:'Sales &amp; Voice', title:'Real Estate Sales Automation &amp; Voice Agent',
@@ -894,7 +894,7 @@ var projects = [
     metric:'Sales & CRM Agent + RAG matching + Email Agent + Voice Agent, one state-machine pipeline',
     desc:'What this project proves:\n— Sales & CRM Agent: lead intake → ICP scoring → pipeline stages → enrichment → automated follow-up\n— RAG / Semantic Recommendation: matches lead preferences to real inventory via Gemini embeddings + pgvector, hard budget filtering plus semantic ranking\n— Email Agent: reads Gmail, distinguishes new inquiries from existing leads, matches listings, replies, follows up\n— Lead Enrichment: identifies and enriches business leads via Tavily/homepage data\n— AI Knowledge Assistant: a separate knowledge base for FAQs, with structured answers for sensitive factual questions instead of relying on similarity alone\n— Voice Agent: Twilio + Pipecat + Deepgram + Cartesia, state-controlled qualify → match → offer slot → booking → handoff\n— Production Engineering: event-driven architecture, idempotent webhooks, Postgres job queue, retries/dead-letter handling, consent checks, explicit state-machine guardrails',
     tags:['Sales & CRM Agent','Voice Agent','Email Agent','RAG Matching'],
-    accentVar:'--signal', image:'images/real estate homepage.png', github:'https://github.com/NoProxyLabs/Real-Estate-Sales-Automation-and-Voice-Agent', live:'https://real-estate-ops-dashboard.vercel.app/', hf:null
+    accentVar:'--signal', image:'images/real estate homepage.png', video:"images/Real Estate Walkthrough video.mp4", github:'https://github.com/NoProxyLabs/Real-Estate-Sales-Automation-and-Voice-Agent', live:'https://real-estate-ops-dashboard.vercel.app/', hf:null
   },
   {
     cat:'model', catLabel:'Model Engineering · From-Scratch LM', title:'MiniLLM — a Modern Transformer, Built From Scratch',
@@ -1087,7 +1087,11 @@ var drawerTagsEl = document.getElementById('drawerTags');
 function openDrawer(p){
   var visualEl = document.getElementById('drawerVisual');
   var study = caseStudies[projects.indexOf(p)];
-  if(p.image){
+  if(p.video){
+    visualEl.style.display = 'block';
+    visualEl.innerHTML = '<video src="'+p.video+'"'+(p.image?' poster="'+p.image+'"':'')+' controls autoplay muted playsinline preload="metadata"></video>';
+    drawer.classList.remove('no-media');
+  } else if(p.image){
     visualEl.style.display = 'block';
     visualEl.innerHTML = '<img src="'+p.image+'" alt="'+p.title+'">';
     drawer.classList.remove('no-media');
