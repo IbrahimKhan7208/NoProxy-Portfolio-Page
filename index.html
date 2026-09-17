@@ -1089,7 +1089,7 @@ function openDrawer(p){
   var study = caseStudies[projects.indexOf(p)];
   if(p.video){
     visualEl.style.display = 'block';
-    visualEl.innerHTML = '<video src="'+p.video+'"'+(p.image?' poster="'+p.image+'"':'')+' controls autoplay muted playsinline preload="metadata"></video>';
+    visualEl.innerHTML = '<video src="'+p.video+'"'+(p.image?' poster="'+p.image+'"':'')+' controls muted playsinline preload="metadata"></video>';
     drawer.classList.remove('no-media');
   } else if(p.image){
     visualEl.style.display = 'block';
